@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --antbox-black: #050505;
+  --antbox-charcoal: #111827;
+  --antbox-slate: #1F2937;
+  --antbox-muted: #F5F7FA;
+  --antbox-green: #22C55E;
+  --antbox-emerald: #10B981;
+  --antbox-blue: #38BDF8;
+  --antbox-purple: #8B5CF6;
+}
+
+body { margin: 0; background: #f5f2ea; color: #101010; font-family: Inter, Geist, ui-sans-serif, system-ui; }
+* { box-sizing: border-box; }
+.table-scroll { overflow-x: auto; }
+.scrollbar-thin::-webkit-scrollbar { width: 8px; height: 8px; }
+.scrollbar-thin::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 999px; }
