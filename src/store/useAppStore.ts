@@ -9,6 +9,7 @@ type AppState = AppData & {
   addItem: <K extends Collection>(key:K, item: Omit<AppData[K][number], "id"> & { id?: string }) => void;
   updateItem: <K extends Collection>(key:K, id:string, patch: Partial<AppData[K][number]>) => void;
   deleteItem: <K extends Collection>(key:K, id:string) => void;
+  replaceData: (data: AppData) => void;
   reset: () => void;
 };
 
@@ -29,11 +30,16 @@ export const useAppStore = create<AppState>((set, get) => ({
     const next = { ...state, [key]: state[key].filter((x:any) => x.id !== id) } as AppState;
     saveData(strip(next)); return next;
   }),
+  replaceData: (data) => set((state) => {
+    const next = { ...state, ...data };
+    saveData(strip(next));
+    return next;
+  }),
   reset: () => set({ ...resetData() })
 }));
 
 function strip(state: AppState): AppData {
-  const { role, setRole, addItem, updateItem, deleteItem, reset, ...data } = state;
-  void role; void setRole; void addItem; void updateItem; void deleteItem; void reset;
+  const { role, setRole, addItem, updateItem, deleteItem, replaceData, reset, ...data } = state;
+  void role; void setRole; void addItem; void updateItem; void deleteItem; void replaceData; void reset;
   return data;
 }

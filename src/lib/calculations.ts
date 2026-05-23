@@ -9,12 +9,12 @@ export function calculateWorkingHours(checkIn: string, checkOut: string) {
   return Math.max(0, +(differenceInMinutes(end, start) / 60).toFixed(1));
 }
 export function attendanceStatus(checkIn: string, checkOut: string) {
-  if (!checkIn) return "Absent" as const;
+  if (!checkIn) return "Not Checked In" as const;
+  if (!checkOut) return checkIn > "10:15" ? "Late" as const : "Present" as const;
   const hours = calculateWorkingHours(checkIn, checkOut);
-  if (checkIn > "10:15") return "Late" as const;
   if (hours < 4) return "Half Day" as const;
-  if (hours >= 8) return "Present" as const;
-  return "Half Day" as const;
+  if (checkIn > "10:15") return "Late" as const;
+  return "Present" as const;
 }
 export const netSalary = (basicSalary:number, allowances:number, deductions:number, lop:number) => basicSalary + allowances - deductions - lop;
 export function projectHealth(deadline:string, progress:number) {

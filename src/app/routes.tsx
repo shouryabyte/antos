@@ -1,8 +1,13 @@
 import { Navigate, type RouteObject } from "react-router-dom";
 import type { ReactNode } from "react";
 import { AppLayout } from "../components/layout/AppLayout";
+import { AuthorizedRoute } from "../auth/AuthorizedRoute";
+import { ProtectedRoute } from "../auth/ProtectedRoute";
 import { PageShell } from "../components/layout/PageShell";
+import { AttendancePage } from "../features/attendance/AttendancePage";
 import { DashboardPage } from "../features/dashboard/DashboardPage";
+import { LeavePage } from "../features/leave/LeavePage";
+import { LoginPage } from "../features/auth/LoginPage";
 import { ModulePage } from "../features/shared/ModulePage";
 import { useAppStore } from "../store/useAppStore";
 import { inr } from "../lib/utils";
@@ -27,14 +32,17 @@ function Placeholder({ title, collection, description }: { title:string; collect
   return <Shell title={title} description={description}><ModulePage title={title} description={description} collection={collection} fields={Object.keys(rows[0] || {}).filter(k=>k!=="id").slice(0,8)} stats={[{label:"Total Records",value:rows.length},{label:"Active Items",value:rows.filter((r:any)=>String(r.status).includes("Active")).length || rows.length},{label:"Pending",value:rows.filter((r:any)=>String(r.status).includes("Pending")).length},{label:"Operational Health",value:"92%"}]} progressKey={rows[0]?.progress!==undefined?"progress":undefined}/></Shell>;
 }
 
-export const routes: RouteObject[] = [{ path:"/", element:<AppLayout/>, children:[
-  { index:true, element:<Shell title="Executive Dashboard" description="Live command center for AntBox people, projects, sprints, readiness, deployment, and finance."><DashboardPage/></Shell> },
+export const routes: RouteObject[] = [
+{ path:"/login", element:<LoginPage/> },
+{ element:<ProtectedRoute/>, children:[{ path:"/", element:<AppLayout/>, children:[{ element:<AuthorizedRoute/>, children:[
+  { index:true, element:<Navigate to="/dashboard" replace/> },
+  { path:"dashboard", element:<Shell title="Executive Dashboard" description="Live command center for AntBox people, projects, sprints, readiness, deployment, and finance."><DashboardPage/></Shell> },
   { path:"employees", element:<Shell title="Employees" description="HRMS employee master with department, role, salary, documents, and employment status."><ModulePage title="Employees" description="" collection="employees" fields={employeeFields} editable stats={[{label:"Total Employees",value:useAppStore.getState().employees.length},{label:"Active Employees",value:useAppStore.getState().employees.filter(e=>e.status==="Active").length},{label:"Interns",value:useAppStore.getState().employees.filter(e=>e.employmentType==="Intern").length},{label:"Payroll Cost",value:inr(useAppStore.getState().payroll.reduce((a,b)=>a+b.netSalary,0))}]}/></Shell> },
   { path:"interns", element:<Shell title="Interns" description="Intern employees and deployed talent tracked across attendance, projects, and PPO outcomes."><ModulePage title="Interns" description="" collection="deployments" fields={["internName","corporateClient","projectAssigned","mentor","performanceScore","ppoProbability","status"]} stats={[{label:"Active Interns",value:useAppStore.getState().deployments.length},{label:"Avg Performance",value:"85%"},{label:"PPO Pipeline",value:useAppStore.getState().deployments.filter(d=>d.ppoProbability>80).length},{label:"Clients",value:new Set(useAppStore.getState().deployments.map(d=>d.corporateClient)).size}]} progressKey="ppoProbability"/></Shell> },
   { path:"students", element:<Shell title="Students" description="Student CRM for career sprint enrollment, readiness, portfolios, and PPO stage tracking."><ModulePage title="Students" description="" collection="students" fields={studentFields} editable stats={[{label:"Active Students",value:useAppStore.getState().students.length},{label:"Avg Readiness",value:"85%"},{label:"PPO Recommended",value:useAppStore.getState().students.filter(s=>s.ppoStatus==="Recommended").length},{label:"Colleges",value:new Set(useAppStore.getState().students.map(s=>s.college)).size}]} progressKey="readinessScore"/></Shell> },
   { path:"departments", element:<Placeholder title="Departments" collection="departments" description="Department budgets, heads, headcount, and operating ownership."/> },
-  { path:"attendance", element:<Shell title="Attendance" description="Daily attendance, work mode, late marks, half-days, and regularization requests."><ModulePage title="Attendance" description="" collection="attendance" fields={["employeeId","date","checkIn","checkOut","workMode","workingHours","regularizationStatus","status"]} editable stats={[{label:"Present Today",value:useAppStore.getState().attendance.filter(a=>a.status==="Present").length},{label:"Late",value:useAppStore.getState().attendance.filter(a=>a.status==="Late").length},{label:"Regularizations",value:useAppStore.getState().attendance.filter(a=>a.regularizationStatus==="Pending").length},{label:"Avg Hours",value:"6.5"}]}/></Shell> },
-  { path:"leave", element:<Shell title="Leave" description="Leave balances, requests, approvals, and team calendar summary."><ModulePage title="Leave" description="" collection="leaves" fields={["employeeId","leaveType","fromDate","toDate","days","reason","managerRemarks","status"]} editable stats={[{label:"Pending Requests",value:useAppStore.getState().leaves.filter(l=>l.status==="Pending").length},{label:"Approved",value:useAppStore.getState().leaves.filter(l=>l.status==="Approved").length},{label:"Rejected",value:useAppStore.getState().leaves.filter(l=>l.status==="Rejected").length},{label:"Avg Balance",value:"14 days"}]}/></Shell> },
+  { path:"attendance", element:<Shell title="Attendance" description="Check in, check out, track today status, and review your monthly attendance."><AttendancePage/></Shell> },
+  { path:"leave", element:<Shell title="Leave" description="Apply leave, track balances, and manage HR approvals."><LeavePage/></Shell> },
   { path:"payroll", element:<Shell title="Payroll" description="Monthly payroll run, salary calculation, deductions, LOP, and payment status."><ModulePage title="Payroll" description="" collection="payroll" fields={["employeeId","month","basicSalary","allowances","deductions","lop","netSalary","paymentDate","status"]} stats={[{label:"Net Payroll",value:inr(useAppStore.getState().payroll.reduce((a,b)=>a+b.netSalary,0))},{label:"Processed",value:useAppStore.getState().payroll.filter(p=>p.status==="Processed").length},{label:"Paid",value:useAppStore.getState().payroll.filter(p=>p.status==="Paid").length},{label:"Draft",value:useAppStore.getState().payroll.filter(p=>p.status==="Draft").length}]}/></Shell> },
   { path:"projects", element:<Shell title="Projects" description="Client projects, sprint delivery, budgets, revenue, progress, and project health."><ModulePage title="Projects" description="" collection="projects" fields={projectFields} editable stats={[{label:"Active Projects",value:useAppStore.getState().projects.filter(p=>p.status!=="Completed").length},{label:"Revenue",value:inr(useAppStore.getState().projects.reduce((a,b)=>a+b.revenue,0))},{label:"At Risk",value:useAppStore.getState().projects.filter(p=>p.health==="Red").length},{label:"Avg Progress",value:"53%"}]} progressKey="progress"/></Shell> },
   { path:"tasks", element:<Shell title="Tasks" description="Kanban workflow for sprint/project assignments, delivery tasks, and review status."><ModulePage title="Tasks" description="Mentors and project managers move work from backlog to done." collection="tasks" fields={taskFields} editable kanban stats={[{label:"Total Tasks",value:useAppStore.getState().tasks.length},{label:"In Progress",value:useAppStore.getState().tasks.filter(t=>t.status==="In Progress").length},{label:"Review",value:useAppStore.getState().tasks.filter(t=>t.status==="Review").length},{label:"Done",value:useAppStore.getState().tasks.filter(t=>t.status==="Done").length}]}/></Shell> },
@@ -60,5 +68,6 @@ export const routes: RouteObject[] = [{ path:"/", element:<AppLayout/>, children
   { path:"certificates", element:<Placeholder title="Certificates" collection="documents" description="Career sprint certificates and verified student credentials."/> },
   { path:"client-feedback", element:<Placeholder title="Client Feedback" collection="deployments" description="Client feedback scores by intern, project, sprint, and PPO opportunity."/> },
   { path:"settings", element:<Placeholder title="Settings" collection="roles" description="Workspace configuration, operating preferences, integrations, and data controls."/> },
-  { path:"*", element:<Navigate to="/" replace/> }
-] }];
+  { path:"*", element:<Navigate to="/dashboard" replace/> }
+] }] }] }
+];

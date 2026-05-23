@@ -10,11 +10,14 @@ import { StatCard } from "../../components/common/StatCard";
 import { StatusBadge } from "../../components/common/StatusBadge";
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
+import { useAuth } from "../../auth/useAuth";
+import type { Permission } from "../../auth/permissions";
 import { useAppStore } from "../../store/useAppStore";
 import { inr, uid } from "../../lib/utils";
 
 type Field = { key:string; label:string; type?:"number"|"date"|"textarea" };
 export function ModulePage({ title, description, collection, fields, stats, editable=false, progressKey, kanban=false }: { title:string; description:string; collection:keyof ReturnType<typeof useAppStore.getState>; fields:string[]|Field[]; stats:{label:string; value:string|number; helper?:string}[]; editable?:boolean; progressKey?:string; kanban?:boolean }) {
+  const auth = useAuth();
   const data = useAppStore((s:any)=>s[collection]) as any[];
   const addItem = useAppStore(s=>s.addItem);
   const [q,setQ] = useState(""); const [open,setOpen] = useState(false); const [form,setForm] = useState<Record<string,string>>({});
@@ -22,11 +25,20 @@ export function ModulePage({ title, description, collection, fields, stats, edit
   const filtered = useMemo(()=>data.filter(row => JSON.stringify(row).toLowerCase().includes(q.toLowerCase())), [data,q]);
   const columns: ColumnDef<any>[] = normalized.slice(0,7).map(f => ({ header:f.label, accessorKey:f.key, cell:({getValue}) => renderValue(getValue(), f.key) }));
   columns.push({ header:"Status", cell:({row}) => <StatusBadge value={String(row.original.status || row.original.paymentStatus || row.original.approvalStatus || row.original.recommendation || row.original.health || "Active")} /> });
-  const save = () => { const item:any = { id:uid(String(collection)) }; normalized.forEach(f=> item[f.key] = f.type === "number" ? Number(form[f.key] || 0) : (form[f.key] || sampleValue(f.key))); addItem(collection as never, item); setOpen(false); setForm({}); };
+  const createPermission = createPermissions[String(collection)];
+  const canCreate = editable && (!createPermission || auth.hasPermission(createPermission));
+  const save = () => {
+    if (!canCreate) return;
+    const item:any = { id:uid(String(collection)) };
+    normalized.forEach(f=> item[f.key] = f.type === "number" ? Number(form[f.key] || 0) : (form[f.key] || sampleValue(f.key)));
+    addItem(collection as never, item);
+    setOpen(false);
+    setForm({});
+  };
   if (kanban) return <KanbanPage title={title} description={description} stats={stats} data={filtered} />;
   return <div>
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{stats.map(s=><StatCard key={s.label} {...s}/>)}</div>
-    <SearchAndFilterBar value={q} onChange={setQ} right={editable && <Button onClick={()=>setOpen(true)}><Plus size={16}/> Add {title.split(" ")[0]}</Button>} />
+    <SearchAndFilterBar value={q} onChange={setQ} right={canCreate && <Button onClick={()=>setOpen(true)}><Plus size={16}/> Add {title.split(" ")[0]}</Button>} />
     {progressKey && <div className="mb-5 grid gap-4 md:grid-cols-3">{filtered.slice(0,3).map((r,i)=><Card key={r.id || i}><h3 className="mb-3 font-black">{r.name || r.internName || r.companyName || r.title}</h3><ProgressMetric label={labelize(progressKey)} value={Number(r[progressKey] || 0)} color={i===0?"bg-emerald-500":i===1?"bg-purple-500":"bg-sky-500"}/></Card>)}</div>}
     {filtered.length ? <DataTable data={filtered} columns={columns}/> : <EmptyState/>}
     <FormDialog open={open} title={`Add ${title}`} onClose={()=>setOpen(false)}>
@@ -44,6 +56,20 @@ function renderValue(value:any, key:string) {
 }
 function labelize(key:string) { return key.replace(/([A-Z])/g," $1").replace(/^./,s=>s.toUpperCase()); }
 function sampleValue(key:string) { if (key.includes("Date")) return "2026-05-23"; if (key.includes("email")) return "new@antbox.in"; if (key.includes("status")) return "Active"; return "New record"; }
+const createPermissions: Record<string, Permission> = {
+  employees: "employee.create",
+  students: "student.create",
+  projects: "project.create",
+  tasks: "task.create",
+  attendance: "attendance.approve",
+  leaves: "leave.apply",
+  timesheets: "timesheet.submit",
+  invoices: "invoice.manage",
+  expenses: "expense.manage",
+  tickets: "ticket.create",
+  assets: "asset.manage",
+  documents: "document.manage"
+};
 function KanbanPage({ title, description, stats, data }: { title:string; description:string; stats:any[]; data:any[] }) {
   const columns = ["Backlog","To Do","In Progress","Review","Done"];
   return <div>
