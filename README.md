@@ -1,25 +1,76 @@
 # AntOS - AntBox Operating System
 
-AntOS is an ERP prototype customized for AntBox's talent-tech operating model. It connects HRMS, projects, attendance, career sprints, students, corporate partners, intern deployment, readiness scoring, PPO tracking, finance, assets, documents, helpdesk, and role permissions.
+AntOS is a centralized ERP prototype customized for AntBox's talent-tech and internship-as-a-service operating model. It connects HRMS, projects, students, career sprints, corporate partners, intern deployment, readiness scoring, PPO tracking, payroll, finance, notifications, and approvals in one operating workspace.
 
-## Features
-- Executive ERP dashboard with KPIs, charts, alerts, approvals, and the AntBox Operating Flow.
-- People, HRMS, work management, academy, IaaS operations, finance, and admin modules.
-- Mock data with Indian names, AntBox departments, career sprints, partners, students, internships, invoices, and tickets.
-- Add/edit/delete-ready localStorage architecture for core modules.
-- Business logic for attendance, leave, payroll, project health, utilization, readiness scores, finance, and PPO recommendations.
-- Responsive SaaS layout with dark sidebar, light workspace, emerald accent, clean tables, status badges, progress bars, and charts.
+## Key Modules
+- Authentication, authorization, RBAC, and protected routes
+- Employee self-service
+- Attendance and attendance regularization
+- Leave management
+- Payroll
+- Projects, tasks, and timesheets
+- Students, Career Sprints, readiness scores, and PPO tracker
+- Corporate partners and intern deployment
+- Finance, invoices, expenses, and profitability
+- Assets, documents, helpdesk tickets
+- Notifications and automations
 
 ## Tech Stack
-React, Vite, TypeScript, Tailwind CSS, shadcn-style components, lucide-react, Recharts, TanStack Table, React Router, React Hook Form, Zod, Zustand, date-fns, localStorage.
+- React
+- Vite
+- TypeScript
+- Tailwind CSS
+- shadcn/ui-style local components
+- React Router
+- Zustand
+- localStorage demo persistence
+- Recharts
+- lucide-react
+- Supabase-ready architecture
 
-## Modules
-Dashboard, Employees, Interns, Students, Departments, Attendance, Leave, Payroll, Onboarding, Exit Management, Projects, Tasks, Timesheets, Deliverables, Career Sprints, Mentors, Readiness Scores, Certificates, Corporate Partners, Intern Deployment, Client Feedback, PPO Tracker, Finance, Assets, Documents, Helpdesk Tickets, Roles & Permissions, Settings.
+## Demo Credentials
+All demo accounts use password `password`.
 
-## Business Logic
-Readiness Score = task completion 30% + mentor feedback 25% + client feedback 20% + attendance 10% + communication 10% + timesheet discipline 5%. Payroll, attendance, project health, utilization, finance, and PPO recommendation formulas live in `src/lib/calculations.ts`.
+| Role | Email |
+| --- | --- |
+| Super Admin | `superadmin@antos.dev` |
+| HR Manager | `hr@antos.dev` |
+| Project Manager | `pm@antos.dev` |
+| Mentor | `mentor@antos.dev` |
+| Finance Manager | `finance@antos.dev` |
+| Employee | `employee@antos.dev` |
+| Intern | `intern@antos.dev` |
+| Student | `student@antos.dev` |
+| Corporate Partner | `partner@antos.dev` |
 
-## Run
+## Role-Based Access
+AntOS uses authentication, a permission map, role-based sidebar visibility, and route-level authorization. Unauthorized users stay logged in but see an Access Denied page when opening restricted modules manually.
+
+Super Admin can access everything. HR can manage people, attendance, leave, and payroll. Project Managers manage projects, tasks, timesheets, and deployments. Mentors manage students, sprints, readiness, and PPO workflows. Finance manages invoices, expenses, payroll cost, and profitability. Employees, interns, students, and corporate partners see scoped self-service/client-facing routes.
+
+## Main Workflows
+- Employee login with session persistence
+- Attendance check-in/check-out with automatic status and working hours
+- Attendance regularization request and HR approval
+- Leave application and HR approval/rejection
+- Approved leave sync to attendance
+- Payroll generation using salary, attendance, unpaid leave, and LOP
+- Timesheet submission and Project Manager approval
+- Finance invoice/payment tracking and expense workflow
+- Notification flow for approvals, payroll, finance, readiness, and PPO events
+
+## Automations
+- Auto attendance status calculation
+- Auto absent marking for past working days
+- Approved leave to attendance sync
+- Payroll LOP calculation from unpaid leave and unregularized absences
+- Project health calculation
+- Readiness score calculation
+- PPO recommendation
+- Invoice overdue status
+- Pending approvals count for dashboard
+
+## How To Run
 ```bash
 npm install
 npm run dev
@@ -27,8 +78,22 @@ npm run build
 npm run preview
 ```
 
-## Future Production Plan
-Replace localStorage services with Supabase repositories, add authentication and RLS policies, introduce audit logs and workflow approvals, connect payroll/invoice exports, and add role-based route guards.
+## Supabase Readiness
+The app runs without Supabase in demo mode. `src/lib/supabase.ts` reads:
 
-## Supabase Integration Plan
-`src/lib/supabase.ts` reads `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`. It intentionally does not require Supabase for the MVP. Add the real client dependency and repository functions when moving from prototype to production.
+```env
+VITE_SUPABASE_URL=
+VITE_SUPABASE_ANON_KEY=
+```
+
+If those variables are empty, AntOS stays in localStorage mode. `supabase/schema.sql` contains the production-ready table structure and RLS policy plan.
+
+## Future Production Plan
+- Connect Supabase Auth
+- Apply Supabase RLS policies
+- Replace localStorage services with Supabase queries
+- Add file uploads using Supabase Storage
+- Add email notifications
+- Add audit logs
+- Add real payroll/statutory compliance
+- Add advanced reporting

@@ -8,6 +8,7 @@ import { StatusBadge } from "../../components/common/StatusBadge";
 import { Card } from "../../components/ui/card";
 import { getPendingApprovalCounts, runAntosAutomation } from "../../lib/automation";
 import { monthLabel } from "../../lib/payrollUtils";
+import { currentMonthPaidRevenue, netProfit, operationalExpenses, payrollCost } from "../../lib/financeUtils";
 import { inr } from "../../lib/utils";
 import { useAppStore } from "../../store/useAppStore";
 
@@ -17,14 +18,14 @@ export function DashboardPage() {
   }, []);
   const s = useAppStore();
   const pending = getPendingApprovalCounts(s);
-  const revenue = s.invoices.reduce((a,b)=>a+b.amount,0), expenses = s.expenses.reduce((a,b)=>a+b.amount,0);
-  const currentMonthPayroll = s.payroll.filter((record) => record.month === monthLabel(new Date()));
-  const payroll = currentMonthPayroll.length ? currentMonthPayroll.reduce((a,b)=>a+b.netSalary,0) : s.employees.filter((employee) => employee.status === "Active").reduce((sum, employee) => sum + employee.salary, 0);
+  const revenue = currentMonthPaidRevenue(s.invoices), expenses = operationalExpenses(s.expenses);
+  const payroll = payrollCost(s.payroll, s.employees, monthLabel(new Date()));
+  const net = netProfit(revenue, payroll, 0, expenses);
   const avgReady = Math.round(s.readinessScores.reduce((a,b)=>a+b.finalScore,0)/s.readinessScores.length);
   const kpis = [
     ["Total Employees",s.employees.length,Users,"emerald"],["Active Interns",s.employees.filter(e=>e.employmentType==="Intern").length + s.deployments.length,BriefcaseBusiness,"blue"],["Active Students",s.students.length,GraduationCap,"purple"],["Live Career Sprints",s.sprints.filter(x=>x.status==="Live").length,Clock,"emerald"],
     ["Corporate Partners",s.partners.length,Building2,"blue"],["Active Projects",s.projects.filter(x=>x.status!=="Completed").length,BriefcaseBusiness,"purple"],["Average Readiness Score",`${avgReady}%`,CheckCircle2,"emerald"],["PPO Ready",s.readinessScores.filter((r)=>r.recommendation==="PPO Ready" || r.recommendation==="High Potential").length,CheckCircle2,"purple"],
-    ["Monthly Revenue",inr(revenue),IndianRupee,"emerald"],["Payroll Cost",inr(payroll),Banknote,"amber"],["Pending Approvals",pending.total,Clock,"amber"],["At-Risk Projects",pending.atRiskProjects,AlertTriangle,"red"]
+    ["Monthly Revenue",inr(revenue),IndianRupee,"emerald"],["Payroll Cost",inr(payroll),Banknote,"amber"],["Pending Approvals",pending.total,Clock,"amber"],["Net Profit",inr(net),AlertTriangle,net >= 0 ? "emerald" : "red"]
   ] as const;
   const finance = [{m:"Jan",rev:12,exp:7},{m:"Feb",rev:16,exp:9},{m:"Mar",rev:21,exp:11},{m:"Apr",rev:24,exp:14},{m:"May",rev:29,exp:17}];
   const flow = ["Talent Intake","Career Sprint","Live Work","Readiness Score","Intern Deployment","Client Feedback","PPO Outcome"];

@@ -1,6 +1,7 @@
 import { eachDayOfInterval, format, isWeekend, startOfMonth, subDays } from "date-fns";
 import { attendanceStatus, calculateWorkingHours, projectHealth, readinessScore, recommendation } from "./calculations";
 import { syncApprovedLeaveToAttendance } from "./leaveUtils";
+import { markOverdueInvoices } from "./financeUtils";
 import { uid } from "./utils";
 import { useAppStore } from "../store/useAppStore";
 import type { Notification, Student } from "../types";
@@ -25,10 +26,22 @@ export function runAntosAutomation() {
   autoMarkAbsent(data, yesterday);
   autoCalculateAttendance(data);
   autoCalculateProjectHealth(data);
+  autoMarkOverdueInvoices(data);
   autoCalculateReadinessAndPpo(data);
   autoCreateAutomationNotifications(data);
 
   store.replaceData(data);
+}
+
+function autoMarkOverdueInvoices(data: ReturnType<typeof snapshot>) {
+  const before = data.invoices.map((invoice) => ({ ...invoice }));
+  data.invoices = markOverdueInvoices(data.invoices);
+  data.invoices.forEach((invoice) => {
+    const previous = before.find((item) => item.id === invoice.id);
+    if (invoice.paymentStatus === "Overdue" && previous?.paymentStatus !== "Overdue") {
+      pushNotificationOnce(data.notifications, { roleTarget:"Finance Manager", title:"Invoice overdue", message:`Invoice ${invoice.invoiceNumber} is overdue.`, type:"Danger", relatedModule:"Finance" });
+    }
+  });
 }
 
 function autoCreateAutomationNotifications(data: ReturnType<typeof snapshot>) {
@@ -70,7 +83,7 @@ export function getPendingApprovalCounts(data = useAppStore.getState()): Pending
   const leaves = data.leaves.filter((item) => item.status === "Pending").length;
   const regularizations = data.attendance.filter((item) => item.regularizationStatus === "Pending").length;
   const timesheets = data.timesheets.filter((item) => item.approvalStatus === "Pending").length;
-  const invoices = data.invoices.filter((item) => item.paymentStatus === "Draft" || item.paymentStatus === "Overdue").length;
+  const invoices = data.invoices.filter((item) => item.paymentStatus === "Draft" || item.paymentStatus === "Sent" || item.paymentStatus === "Overdue").length;
   const atRiskProjects = data.projects.filter((item) => item.health === "Red").length;
   return { leaves, regularizations, timesheets, invoices, atRiskProjects, total: leaves + regularizations + timesheets + invoices };
 }
