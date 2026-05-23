@@ -1,8 +1,9 @@
-import { eachDayOfInterval, format, isWeekend, parseISO, startOfMonth, subDays } from "date-fns";
+import { eachDayOfInterval, format, isWeekend, startOfMonth, subDays } from "date-fns";
 import { attendanceStatus, calculateWorkingHours, projectHealth, readinessScore, recommendation } from "./calculations";
+import { syncApprovedLeaveToAttendance } from "./leaveUtils";
 import { uid } from "./utils";
 import { useAppStore } from "../store/useAppStore";
-import type { Attendance, Student } from "../types";
+import type { Student } from "../types";
 
 export type PendingApprovalCounts = {
   leaves: number;
@@ -19,7 +20,8 @@ export function runAntosAutomation() {
   const today = new Date();
   const yesterday = subDays(today, 1);
 
-  autoMarkApprovedLeave(data);
+  const syncedData = syncApprovedLeaveToAttendance(data);
+  Object.assign(data, syncedData);
   autoMarkAbsent(data, yesterday);
   autoCalculateAttendance(data);
   autoCalculateProjectHealth(data);
@@ -60,28 +62,6 @@ function autoMarkAbsent(data: ReturnType<typeof snapshot>, untilDate: Date) {
             remarks: "Auto-marked absent"
           });
         }
-      });
-    });
-}
-
-function autoMarkApprovedLeave(data: ReturnType<typeof snapshot>) {
-  data.leaves
-    .filter((leave) => leave.status === "Approved")
-    .forEach((leave) => {
-      eachDayOfInterval({ start: parseISO(leave.fromDate), end: parseISO(leave.toDate) }).forEach((day) => {
-        const date = format(day, "yyyy-MM-dd");
-        const existing = data.attendance.find((record) => record.employeeId === leave.employeeId && record.date === date);
-        const patch: Omit<Attendance, "id" | "employeeId" | "date"> = {
-          checkIn: "",
-          checkOut: "",
-          workMode: existing?.workMode || "Hybrid",
-          status: "Leave",
-          workingHours: 0,
-          regularizationStatus: "None",
-          remarks: `${leave.leaveType} leave approved`
-        };
-        if (existing) Object.assign(existing, patch);
-        else data.attendance.push({ id: uid("auto-leave"), employeeId: leave.employeeId, date, ...patch });
       });
     });
 }
