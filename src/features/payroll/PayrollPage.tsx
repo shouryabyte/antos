@@ -6,6 +6,7 @@ import { StatCard } from "../../components/common/StatCard";
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
 import { generatePayroll, markPayrollPaid, monthLabel, processPayroll } from "../../lib/payrollUtils";
+import { createNotification } from "../../lib/notifications";
 import { inr } from "../../lib/utils";
 import { useAppStore } from "../../store/useAppStore";
 import type { Payroll } from "../../types";
@@ -51,7 +52,10 @@ export function PayrollPage() {
     updatePayroll(nextPayroll, `Payroll generated for ${selectedMonth}. Draft records were updated; processed/paid records were preserved.`);
   };
 
-  const handleProcess = () => updatePayroll(processPayroll(payroll, selectedMonth, profile?.name || "Payroll Admin"), `Draft payroll processed for ${selectedMonth}.`);
+  const handleProcess = () => {
+    updatePayroll(processPayroll(payroll, selectedMonth, profile?.name || "Payroll Admin"), `Draft payroll processed for ${selectedMonth}.`);
+    createNotification({ roleTarget:"Finance Manager", title:"Payroll processed", message:`Payroll processed for ${selectedMonth}.`, type:"Success", relatedModule:"Payroll" });
+  };
   const handlePaid = () => updatePayroll(markPayrollPaid(payroll, selectedMonth, profile?.name || "Payroll Admin"), `Processed payroll marked as paid for ${selectedMonth}.`);
 
   return <div className="space-y-6">

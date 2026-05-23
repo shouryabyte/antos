@@ -11,6 +11,8 @@ import { StatCard } from "../../components/common/StatCard";
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
 import { calculateLeaveDays, getLOPDays, getLeaveBalances, hasOverlappingLeave, syncApprovedLeaveToAttendance } from "../../lib/leaveUtils";
+import { runAntosAutomation } from "../../lib/automation";
+import { createNotification } from "../../lib/notifications";
 import { uid } from "../../lib/utils";
 import { useAppStore } from "../../store/useAppStore";
 import type { AppData } from "../../lib/storage";
@@ -57,6 +59,7 @@ export function LeavePage() {
   });
 
   useEffect(() => {
+    runAntosAutomation();
     replaceData(syncApprovedLeaveToAttendance(toAppData(useAppStore.getState())));
   }, [replaceData]);
 
@@ -104,6 +107,8 @@ export function LeavePage() {
       managerRemarks: "",
       createdAt: new Date().toISOString()
     });
+    createNotification({ roleTarget:"HR Manager", title:"Leave request submitted", message:"A leave request is pending approval.", type:"Info", relatedModule:"Leave" });
+    createNotification({ roleTarget:"Super Admin", title:"Leave request submitted", message:"A leave request is pending approval.", type:"Info", relatedModule:"Leave" });
     setMessage("Leave request submitted.");
     setApplyOpen(false);
     form.reset({ leaveType: "Casual", fromDate: values.fromDate, toDate: values.fromDate, reason: "" });
@@ -118,6 +123,7 @@ export function LeavePage() {
     const nextLeaves = leaves.map((leave) => leave.id === review.leave.id ? { ...leave, ...patch } : leave);
     const nextData = syncApprovedLeaveToAttendance({ ...toAppData(useAppStore.getState()), leaves: nextLeaves });
     replaceData(nextData);
+    createNotification({ userId: userIdForEmployee(review.leave.employeeId), title:`Leave ${review.decision.toLowerCase()}`, message:`Your leave request has been ${review.decision.toLowerCase()}.`, type: review.decision === "Approved" ? "Success" : "Danger", relatedModule:"Leave" });
     setMessage(`Leave ${review.decision.toLowerCase()}.`);
     setReview(null);
     setRemarks("");
@@ -252,4 +258,9 @@ function toAppData(state: ReturnType<typeof useAppStore.getState>): AppData {
   const { role, setRole, addItem, updateItem, deleteItem, replaceData, reset, ...data } = state;
   void role; void setRole; void addItem; void updateItem; void deleteItem; void replaceData; void reset;
   return data;
+}
+
+function userIdForEmployee(employeeId:string) {
+  const map: Record<string,string> = { e1:"u-employee", e2:"u-pm", e3:"u-mentor", e5:"u-finance" };
+  return map[employeeId] || "u-employee";
 }

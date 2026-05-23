@@ -1,5 +1,5 @@
 import { netSalary, readinessScore, recommendation } from "./calculations";
-import type { Asset, Attendance, CareerSprint, CorporatePartner, Department, Document, Employee, Expense, InternDeployment, Invoice, Leave, Payroll, Project, ReadinessScore, Role, Student, Task, Ticket, Timesheet } from "../types";
+import type { Asset, Attendance, CareerSprint, CorporatePartner, Department, Document, Employee, Expense, InternDeployment, Invoice, Leave, Notification, Payroll, Project, ReadinessScore, Role, Student, Task, Ticket, Timesheet } from "../types";
 
 export const employees: Employee[] = [
   { id:"e1", employeeCode:"ABX-001", name:"Aarav Mehta", email:"aarav@antbox.in", phone:"+91 98765 10001", department:"Engineering", designation:"Frontend Lead", manager:"Riya Sharma", joiningDate:"2023-02-12", employmentType:"Full-time", salary:145000, workLocation:"Bengaluru", status:"Active", avatar:"AM", skills:["React","TypeScript","Design Systems"], documents:["Offer Letter","NDA"] },
@@ -101,5 +101,9 @@ export const roles: Role[] = [
   { id:"r8", name:"Student", permissions:["Sprints","Submissions","Readiness Score"] },
   { id:"r9", name:"Corporate Partner", permissions:["Assigned Interns","Feedback","Invoices"] }
 ];
+export const notifications: Notification[] = [
+  { id:"n1", roleTarget:"Project Manager", title:"Timesheet pending approval", message:"A timesheet is waiting for project manager review.", type:"Warning", relatedModule:"Timesheets", isRead:false, createdAt:"2026-05-22T10:00:00.000Z" },
+  { id:"n2", roleTarget:"HR Manager", title:"Leave request submitted", message:"A leave request is pending approval.", type:"Info", relatedModule:"Leave", isRead:false, createdAt:"2026-05-22T11:00:00.000Z" }
+];
 
-export const mockData = { employees, departments, attendance, leaves, payroll, projects, tasks, timesheets, students, sprints, partners, deployments, readinessScores, invoices, expenses, assets, documents, tickets, roles };
+export const mockData = { employees, departments, attendance, leaves, payroll, projects, tasks, timesheets, students, sprints, partners, deployments, readinessScores, invoices, expenses, assets, documents, tickets, roles, notifications };

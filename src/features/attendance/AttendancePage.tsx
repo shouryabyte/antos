@@ -1,6 +1,7 @@
 import { format, isSameMonth, parseISO } from "date-fns";
 import { CalendarDays, CheckCircle2, Clock, FilePenLine, LogIn, LogOut, Timer, XCircle } from "lucide-react";
 import { useMemo, useState } from "react";
+import { useEffect } from "react";
 import { useAuth } from "../../auth/useAuth";
 import { StatusBadge } from "../../components/common/StatusBadge";
 import { FormDialog } from "../../components/common/FormDialog";
@@ -8,6 +9,8 @@ import { StatCard } from "../../components/common/StatCard";
 import { Button } from "../../components/ui/button";
 import { Card } from "../../components/ui/card";
 import { attendanceStatus, calculateWorkingHours } from "../../lib/calculations";
+import { runAntosAutomation } from "../../lib/automation";
+import { createNotification } from "../../lib/notifications";
 import { uid } from "../../lib/utils";
 import { useAppStore } from "../../store/useAppStore";
 import type { Attendance } from "../../types";
@@ -16,6 +19,9 @@ const today = () => format(new Date(), "yyyy-MM-dd");
 const nowTime = () => format(new Date(), "HH:mm");
 
 export function AttendancePage() {
+  useEffect(() => {
+    runAntosAutomation();
+  }, []);
   const { employeeId, profile, hasPermission } = useAuth();
   const employees = useAppStore((s) => s.employees);
   const fallbackEmployeeId = employees[0]?.id;
@@ -119,6 +125,8 @@ export function AttendancePage() {
       correctedCheckOut,
       remarks: "Regularization requested"
     });
+    createNotification({ roleTarget:"HR Manager", title:"Regularization request submitted", message:"An attendance regularization request is pending approval.", type:"Warning", relatedModule:"Attendance" });
+    createNotification({ roleTarget:"Super Admin", title:"Regularization request submitted", message:"An attendance regularization request is pending approval.", type:"Warning", relatedModule:"Attendance" });
     setRegularizing(null);
     setRegularizationReason("");
     setCorrectedCheckIn("");
@@ -140,6 +148,7 @@ export function AttendancePage() {
       approvedBy: profile?.name || "HR Manager",
       remarks: reviewRemarks.trim() || (decision === "Approved" ? "Regularization approved" : "Regularization rejected")
     });
+    createNotification({ userId: userIdForEmployee(record.employeeId), title:`Regularization ${decision.toLowerCase()}`, message:`Your attendance regularization has been ${decision.toLowerCase()}.`, type: decision === "Approved" ? "Success" : "Danger", relatedModule:"Attendance" });
     setReviewing(null);
     setReviewRemarks("");
   };
@@ -344,4 +353,9 @@ export function AttendancePage() {
       </div>}
     </FormDialog>
   </div>;
+}
+
+function userIdForEmployee(employeeId:string) {
+  const map: Record<string,string> = { e1:"u-employee", e2:"u-pm", e3:"u-mentor", e5:"u-finance" };
+  return map[employeeId] || "u-employee";
 }

@@ -3,7 +3,7 @@ import { attendanceStatus, calculateWorkingHours, projectHealth, readinessScore,
 import { syncApprovedLeaveToAttendance } from "./leaveUtils";
 import { uid } from "./utils";
 import { useAppStore } from "../store/useAppStore";
-import type { Student } from "../types";
+import type { Notification, Student } from "../types";
 
 export type PendingApprovalCounts = {
   leaves: number;
@@ -26,8 +26,44 @@ export function runAntosAutomation() {
   autoCalculateAttendance(data);
   autoCalculateProjectHealth(data);
   autoCalculateReadinessAndPpo(data);
+  autoCreateAutomationNotifications(data);
 
   store.replaceData(data);
+}
+
+function autoCreateAutomationNotifications(data: ReturnType<typeof snapshot>) {
+  data.projects.filter((project) => project.health === "Red").forEach((project) => {
+    pushNotificationOnce(data.notifications, {
+      roleTarget: "Project Manager",
+      title: "Project at risk",
+      message: `${project.name} is marked red by automated project health.`,
+      type: "Danger",
+      relatedModule: "Projects"
+    });
+  });
+  data.readinessScores.forEach((score) => {
+    pushNotificationOnce(data.notifications, {
+      roleTarget: "Mentor",
+      title: "Readiness score updated",
+      message: `Readiness score updated for student ${score.studentId}.`,
+      type: "Info",
+      relatedModule: "Readiness"
+    });
+    if (score.recommendation === "PPO Ready" || score.recommendation === "High Potential") {
+      pushNotificationOnce(data.notifications, {
+        roleTarget: "Mentor",
+        title: "PPO recommended",
+        message: `Student ${score.studentId} is ready for PPO review.`,
+        type: "Success",
+        relatedModule: "PPO"
+      });
+    }
+  });
+}
+
+function pushNotificationOnce(notifications: Notification[], input: Omit<Notification, "id"|"isRead"|"createdAt">) {
+  const exists = notifications.some((item) => item.title === input.title && item.message === input.message && item.relatedModule === input.relatedModule);
+  if (!exists) notifications.push({ id: uid("auto-notif"), ...input, isRead:false, createdAt:new Date().toISOString() });
 }
 
 export function getPendingApprovalCounts(data = useAppStore.getState()): PendingApprovalCounts {
@@ -138,6 +174,7 @@ function snapshot(state: ReturnType<typeof useAppStore.getState>) {
     assets: state.assets.map((item) => ({ ...item })),
     documents: state.documents.map((item) => ({ ...item })),
     tickets: state.tickets.map((item) => ({ ...item })),
-    roles: state.roles.map((item) => ({ ...item, permissions: [...item.permissions] }))
+    roles: state.roles.map((item) => ({ ...item, permissions: [...item.permissions] })),
+    notifications: state.notifications.map((item) => ({ ...item }))
   };
 }

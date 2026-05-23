@@ -23,7 +23,7 @@ export function DashboardPage() {
   const avgReady = Math.round(s.readinessScores.reduce((a,b)=>a+b.finalScore,0)/s.readinessScores.length);
   const kpis = [
     ["Total Employees",s.employees.length,Users,"emerald"],["Active Interns",s.employees.filter(e=>e.employmentType==="Intern").length + s.deployments.length,BriefcaseBusiness,"blue"],["Active Students",s.students.length,GraduationCap,"purple"],["Live Career Sprints",s.sprints.filter(x=>x.status==="Live").length,Clock,"emerald"],
-    ["Corporate Partners",s.partners.length,Building2,"blue"],["Active Projects",s.projects.filter(x=>x.status!=="Completed").length,BriefcaseBusiness,"purple"],["Average Readiness Score",`${avgReady}%`,CheckCircle2,"emerald"],["PPOs Issued",s.partners.reduce((a,b)=>a+b.pposIssued,0),CheckCircle2,"purple"],
+    ["Corporate Partners",s.partners.length,Building2,"blue"],["Active Projects",s.projects.filter(x=>x.status!=="Completed").length,BriefcaseBusiness,"purple"],["Average Readiness Score",`${avgReady}%`,CheckCircle2,"emerald"],["PPO Ready",s.readinessScores.filter((r)=>r.recommendation==="PPO Ready" || r.recommendation==="High Potential").length,CheckCircle2,"purple"],
     ["Monthly Revenue",inr(revenue),IndianRupee,"emerald"],["Payroll Cost",inr(payroll),Banknote,"amber"],["Pending Approvals",pending.total,Clock,"amber"],["At-Risk Projects",pending.atRiskProjects,AlertTriangle,"red"]
   ] as const;
   const finance = [{m:"Jan",rev:12,exp:7},{m:"Feb",rev:16,exp:9},{m:"Mar",rev:21,exp:11},{m:"Apr",rev:24,exp:14},{m:"May",rev:29,exp:17}];
