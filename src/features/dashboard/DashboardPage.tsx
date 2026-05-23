@@ -7,6 +7,7 @@ import { StatCard } from "../../components/common/StatCard";
 import { StatusBadge } from "../../components/common/StatusBadge";
 import { Card } from "../../components/ui/card";
 import { getPendingApprovalCounts, runAntosAutomation } from "../../lib/automation";
+import { monthLabel } from "../../lib/payrollUtils";
 import { inr } from "../../lib/utils";
 import { useAppStore } from "../../store/useAppStore";
 
@@ -16,7 +17,9 @@ export function DashboardPage() {
   }, []);
   const s = useAppStore();
   const pending = getPendingApprovalCounts(s);
-  const revenue = s.invoices.reduce((a,b)=>a+b.amount,0), expenses = s.expenses.reduce((a,b)=>a+b.amount,0), payroll = s.payroll.reduce((a,b)=>a+b.netSalary,0);
+  const revenue = s.invoices.reduce((a,b)=>a+b.amount,0), expenses = s.expenses.reduce((a,b)=>a+b.amount,0);
+  const currentMonthPayroll = s.payroll.filter((record) => record.month === monthLabel(new Date()));
+  const payroll = currentMonthPayroll.length ? currentMonthPayroll.reduce((a,b)=>a+b.netSalary,0) : s.employees.filter((employee) => employee.status === "Active").reduce((sum, employee) => sum + employee.salary, 0);
   const avgReady = Math.round(s.readinessScores.reduce((a,b)=>a+b.finalScore,0)/s.readinessScores.length);
   const kpis = [
     ["Total Employees",s.employees.length,Users,"emerald"],["Active Interns",s.employees.filter(e=>e.employmentType==="Intern").length + s.deployments.length,BriefcaseBusiness,"blue"],["Active Students",s.students.length,GraduationCap,"purple"],["Live Career Sprints",s.sprints.filter(x=>x.status==="Live").length,Clock,"emerald"],
