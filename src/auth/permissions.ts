@@ -100,7 +100,7 @@ export const rolePermissions: Record<RoleName, Permission[]> = {
   Mentor: ["dashboard.read","student.read","student.create","sprint.read","sprint.create","readiness.read","readiness.update","mentor.read","certificate.read","ppo.read","task.read","task.create","task.update","ticket.create"],
   "Finance Manager": ["dashboard.read","finance.read","finance.manage","invoice.read","invoice.manage","expense.read","expense.manage","payroll.read_all","payroll.process","ticket.create"],
   Employee: ["dashboard.read","attendance.read_self","attendance.check_in","attendance.check_out","attendance.regularize","leave.read_self","leave.apply","payroll.read_self","task.read","timesheet.read_self","timesheet.submit","document.read","ticket.create"],
-  Intern: ["dashboard.read","attendance.read_self","attendance.check_in","attendance.check_out","attendance.regularize","task.read","timesheet.read_self","timesheet.submit","deployment.read","readiness.read","ticket.create"],
+  Intern: ["dashboard.read","attendance.read_self","attendance.check_in","attendance.check_out","attendance.regularize","leave.read_self","leave.apply","payroll.read_self","task.read","timesheet.read_self","timesheet.submit","deployment.read","readiness.read","ticket.create"],
   Student: ["dashboard.read","student.read","sprint.read","readiness.read","certificate.read","ppo.read","ticket.create"],
   "Corporate Partner": ["dashboard.read","partner.read","deployment.read","project.read","feedback.read","invoice.read","ticket.create"]
 };
@@ -149,7 +149,7 @@ export const roleSidebarPaths: Record<RoleName, string[]> = {
   Mentor: ["/dashboard","/students","/career-sprints","/readiness-scores","/mentors","/certificates","/ppo-tracker"],
   "Finance Manager": ["/dashboard","/finance/invoices","/finance/expenses","/finance/payroll-cost","/finance/profitability"],
   Employee: ["/dashboard","/attendance","/leave","/tasks","/timesheets","/payroll","/helpdesk","/documents"],
-  Intern: ["/dashboard","/attendance","/tasks","/timesheets","/intern-deployment","/readiness-scores","/helpdesk"],
+  Intern: ["/dashboard","/attendance","/leave","/tasks","/timesheets","/payroll","/intern-deployment","/readiness-scores","/helpdesk"],
   Student: ["/dashboard","/career-sprints","/readiness-scores","/certificates","/ppo-tracker"],
   "Corporate Partner": ["/dashboard","/intern-deployment","/projects","/client-feedback","/finance/invoices"]
 };

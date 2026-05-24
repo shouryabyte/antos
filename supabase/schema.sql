@@ -187,6 +187,20 @@ create table if not exists public.leave_requests (
   updated_at timestamptz default now()
 );
 
+alter table public.leave_requests add column if not exists employee_id uuid references public.employees(id) on delete cascade;
+alter table public.leave_requests add column if not exists leave_type text;
+alter table public.leave_requests add column if not exists from_date date;
+alter table public.leave_requests add column if not exists to_date date;
+alter table public.leave_requests add column if not exists days numeric default 0;
+alter table public.leave_requests add column if not exists reason text;
+alter table public.leave_requests add column if not exists status text default 'Pending';
+alter table public.leave_requests add column if not exists manager_remarks text;
+alter table public.leave_requests add column if not exists approved_by text;
+alter table public.leave_requests add column if not exists approved_at timestamptz;
+alter table public.leave_requests add column if not exists rejected_by text;
+alter table public.leave_requests add column if not exists rejected_at timestamptz;
+alter table public.leave_requests add column if not exists updated_at timestamptz default now();
+
 do $$
 begin
   if not exists (
@@ -221,6 +235,22 @@ create table if not exists public.payroll (
   updated_at timestamptz default now(),
   unique(employee_id, month)
 );
+
+alter table public.payroll add column if not exists employee_id uuid references public.employees(id) on delete cascade;
+alter table public.payroll add column if not exists month text;
+alter table public.payroll add column if not exists basic_salary numeric default 0;
+alter table public.payroll add column if not exists allowances numeric default 0;
+alter table public.payroll add column if not exists deductions numeric default 0;
+alter table public.payroll add column if not exists lop numeric default 0;
+alter table public.payroll add column if not exists lop_days numeric default 0;
+alter table public.payroll add column if not exists net_salary numeric default 0;
+alter table public.payroll add column if not exists status text default 'Draft';
+alter table public.payroll add column if not exists payment_date date;
+alter table public.payroll add column if not exists generated_at timestamptz;
+alter table public.payroll add column if not exists processed_at timestamptz;
+alter table public.payroll add column if not exists processed_by text;
+alter table public.payroll add column if not exists paid_by text;
+alter table public.payroll add column if not exists updated_at timestamptz default now();
 
 create table if not exists public.projects (
   id uuid primary key default gen_random_uuid(),
@@ -821,6 +851,8 @@ create policy "payroll_hr_finance_read" on public.payroll
   for select using (public.is_hr_manager() or public.is_finance_manager());
 create policy "payroll_hr_process" on public.payroll
   for all using (public.is_hr_manager()) with check (public.is_hr_manager());
+create policy "payroll_finance_insert" on public.payroll
+  for insert with check (public.is_finance_manager());
 create policy "payroll_finance_update" on public.payroll
   for update using (public.is_finance_manager()) with check (public.is_finance_manager());
 create policy "payroll_self_read" on public.payroll
@@ -871,6 +903,18 @@ create policy "notifications_attendance_request_insert" on public.notifications
     auth.uid() is not null
     and related_module = 'Attendance'
     and role_target in ('HR Manager', 'Super Admin')
+  );
+create policy "notifications_leave_request_insert" on public.notifications
+  for insert with check (
+    auth.uid() is not null
+    and related_module = 'Leave'
+    and role_target in ('HR Manager', 'Super Admin')
+  );
+create policy "notifications_self_service_insert" on public.notifications
+  for insert with check (
+    auth.uid() is not null
+    and (user_id = auth.uid() or role_target in ('HR Manager', 'Finance Manager', 'Super Admin'))
+    and related_module in ('Leave', 'Payroll', 'Account', 'Role Change', 'Profile', 'Security', 'Approval')
   );
 
 create policy "invitations_admin_read" on public.user_invitations
