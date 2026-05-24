@@ -310,6 +310,24 @@ create table if not exists public.timesheets (
   updated_at timestamptz default now()
 );
 
+alter table public.timesheets add column if not exists employee_id uuid references public.employees(id) on delete cascade;
+alter table public.timesheets add column if not exists project_id uuid references public.projects(id) on delete set null;
+alter table public.timesheets add column if not exists task_id uuid references public.tasks(id) on delete set null;
+alter table public.timesheets add column if not exists date date;
+alter table public.timesheets add column if not exists hours_worked numeric default 0;
+alter table public.timesheets add column if not exists type text default 'Billable';
+alter table public.timesheets add column if not exists description text;
+alter table public.timesheets add column if not exists approval_status text default 'Pending';
+alter table public.timesheets add column if not exists submitted_at timestamptz;
+alter table public.timesheets add column if not exists approved_by text;
+alter table public.timesheets add column if not exists approved_by_profile_id uuid references public.profiles(id) on delete set null;
+alter table public.timesheets add column if not exists approved_at timestamptz;
+alter table public.timesheets add column if not exists rejected_by text;
+alter table public.timesheets add column if not exists rejected_by_profile_id uuid references public.profiles(id) on delete set null;
+alter table public.timesheets add column if not exists rejected_at timestamptz;
+alter table public.timesheets add column if not exists manager_remarks text;
+alter table public.timesheets add column if not exists updated_at timestamptz default now();
+
 create table if not exists public.career_sprints (
   id uuid primary key default gen_random_uuid(),
   sprint_code text unique,
@@ -753,6 +771,23 @@ create index if not exists idx_payroll_employee_month on public.payroll(employee
 create index if not exists idx_projects_status_manager_id on public.projects(status, manager_id);
 create index if not exists idx_tasks_project_assigned_status on public.tasks(project_id, assigned_to, status);
 create index if not exists idx_timesheets_employee_project_status on public.timesheets(employee_id, project_id, approval_status);
+do $$
+begin
+  if not exists (
+    select 1 from pg_indexes
+    where schemaname = 'public' and indexname = 'idx_timesheets_no_duplicate_active'
+  ) and not exists (
+    select 1
+    from public.timesheets
+    where approval_status in ('Pending', 'Approved')
+    group by employee_id, task_id, date
+    having count(*) > 1
+  ) then
+    create unique index idx_timesheets_no_duplicate_active
+      on public.timesheets(employee_id, task_id, date)
+      where approval_status in ('Pending', 'Approved');
+  end if;
+end $$;
 create index if not exists idx_invoices_client_status_due on public.invoices(client, payment_status, due_date);
 create index if not exists idx_notifications_user_read on public.notifications(user_id, is_read);
 create index if not exists idx_sprint_enrollments_student on public.sprint_enrollments(student_id);
@@ -830,6 +865,8 @@ create policy "employees_self_update_profile_fields" on public.employees
 
 create policy "attendance_hr_manage" on public.attendance
   for all using (public.is_hr_manager()) with check (public.is_hr_manager());
+create policy "attendance_finance_payroll_read" on public.attendance
+  for select using (public.is_finance_manager());
 create policy "attendance_self_read" on public.attendance
   for select using (employee_id = public.get_current_employee_id());
 create policy "attendance_self_insert" on public.attendance
@@ -839,6 +876,8 @@ create policy "attendance_self_update" on public.attendance
 
 create policy "leave_hr_manage" on public.leave_requests
   for all using (public.is_hr_manager()) with check (public.is_hr_manager());
+create policy "leave_finance_payroll_read" on public.leave_requests
+  for select using (public.is_finance_manager());
 create policy "leave_self_read" on public.leave_requests
   for select using (employee_id = public.get_current_employee_id());
 create policy "leave_self_insert" on public.leave_requests
@@ -909,6 +948,12 @@ create policy "notifications_leave_request_insert" on public.notifications
     auth.uid() is not null
     and related_module = 'Leave'
     and role_target in ('HR Manager', 'Super Admin')
+  );
+create policy "notifications_timesheet_request_insert" on public.notifications
+  for insert with check (
+    auth.uid() is not null
+    and related_module = 'Timesheets'
+    and role_target in ('Project Manager', 'Super Admin')
   );
 create policy "notifications_self_service_insert" on public.notifications
   for insert with check (

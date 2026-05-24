@@ -1,4 +1,4 @@
-import { eachDayOfInterval, format, isSameMonth, parse, parseISO } from "date-fns";
+import { eachDayOfInterval, endOfMonth, format, isSameMonth, parse, parseISO, startOfMonth } from "date-fns";
 import { supabase } from "../lib/supabase";
 import type { Leave } from "../types";
 
@@ -194,14 +194,15 @@ export async function getLOPDays(employeeId: string, month: string | Date) {
     .flatMap((leave) => eachDayOfInterval({ start: parseISO(leave.from_date), end: parseISO(leave.to_date) }))
     .filter((day) => isSameMonth(day, monthDate)).length;
 
-  const monthPrefix = format(monthDate, "yyyy-MM");
+  const monthStart = format(startOfMonth(monthDate), "yyyy-MM-dd");
+  const monthEnd = format(endOfMonth(monthDate), "yyyy-MM-dd");
   const { data: attendanceRows, error: attendanceError } = await client()
     .from("attendance")
     .select("date,status,regularization_status")
     .eq("employee_id", employeeId)
     .eq("status", "Absent")
-    .gte("date", `${monthPrefix}-01`)
-    .lte("date", `${monthPrefix}-31`);
+    .gte("date", monthStart)
+    .lte("date", monthEnd);
   if (attendanceError) throw new Error(attendanceError.message);
 
   const unregularizedAbsences = (attendanceRows || [])

@@ -147,7 +147,7 @@ export const roleSidebarPaths: Record<RoleName, string[]> = {
   "HR Manager": ["/dashboard","/employees","/interns","/attendance","/leave","/payroll","/onboarding","/exit-management","/assets","/documents","/helpdesk","/admin/invitations","/admin/role-change-requests"],
   "Project Manager": ["/dashboard","/projects","/tasks","/timesheets","/deliverables","/intern-deployment","/client-feedback"],
   Mentor: ["/dashboard","/students","/career-sprints","/readiness-scores","/mentors","/certificates","/ppo-tracker"],
-  "Finance Manager": ["/dashboard","/finance/invoices","/finance/expenses","/finance/payroll-cost","/finance/profitability"],
+  "Finance Manager": ["/dashboard","/payroll","/finance/invoices","/finance/expenses","/finance/payroll-cost","/finance/profitability"],
   Employee: ["/dashboard","/attendance","/leave","/tasks","/timesheets","/payroll","/helpdesk","/documents"],
   Intern: ["/dashboard","/attendance","/leave","/tasks","/timesheets","/payroll","/intern-deployment","/readiness-scores","/helpdesk"],
   Student: ["/dashboard","/career-sprints","/readiness-scores","/certificates","/ppo-tracker"],
