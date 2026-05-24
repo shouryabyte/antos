@@ -97,3 +97,88 @@ If those variables are empty, AntOS stays in localStorage mode. `supabase/schema
 - Add audit logs
 - Add real payroll/statutory compliance
 - Add advanced reporting
+
+## Supabase Backend Setup
+Phase 12A adds a real Supabase backend foundation while keeping the current frontend in demo/localStorage mode.
+
+1. Create a Supabase project.
+2. Open Supabase SQL Editor and run `supabase/schema.sql`.
+3. In Supabase Project Settings, copy the project URL and the `service_role` key.
+4. Create `.env.seed` from `.env.seed.example`:
+
+```env
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
+```
+
+5. Run the seed script:
+
+```bash
+npm run seed:supabase
+```
+
+The seed script creates Supabase Auth users, confirms their emails, and inserts matching profiles, RBAC records, employees, students, partners, projects, tasks, attendance, leave, payroll, timesheets, sprints, deployments, readiness scores, PPO records, invoices, expenses, assets, documents, tickets, and notifications.
+
+Seeded Supabase login password for every user is `Antos@12345`.
+
+| Role | Email |
+| --- | --- |
+| Super Admin | `superadmin@antos.dev` |
+| HR Manager | `hr@antos.dev` |
+| Project Manager | `pm@antos.dev` |
+| Mentor | `mentor@antos.dev` |
+| Finance Manager | `finance@antos.dev` |
+| Employee | `employee@antos.dev` |
+| Intern | `intern@antos.dev` |
+| Student | `student@antos.dev` |
+| Corporate Partner | `partner@antos.dev` |
+
+Do not put the service role key in `VITE_` variables, frontend code, or committed files. `.env.seed` and `.env.local` are ignored by git.
+
+## Professional User Onboarding
+AntOS now uses invitation-first account provisioning for employees, interns, and privileged roles. Public users cannot choose admin roles.
+
+- Super Admin can invite any role.
+- HR Manager can invite only Employee and Intern users.
+- HR Manager can request role changes, but privileged roles require Super Admin approval.
+- Student access is limited to Student workflows and remains `Pending Verification` after profile completion.
+- Corporate Partner access remains `Pending Partner Approval` until verified.
+- Suspended and Exited users are blocked from protected ERP routes.
+- Pending Profile Completion users are redirected to `/complete-profile`.
+
+New account lifecycle statuses:
+
+```text
+Invited
+Pending Profile Completion
+Pending Verification
+Pending Partner Approval
+Active
+Suspended
+Exited
+```
+
+Admin routes:
+
+```text
+/admin/invitations
+/admin/role-change-requests
+/admin/audit-logs
+/complete-profile
+/account-disabled
+/pending-verification
+```
+
+Onboarding automations:
+- Auto-expire pending invitations after `expires_at`.
+- Prevent duplicate active pending invitations for the same email.
+- Accept matching pending invitations during first login.
+- Create profile records from invitation data when needed.
+- Generate role-aware onboarding tasks.
+- Complete onboarding tasks after profile completion.
+- Activate employee/admin accounts after required profile fields are complete.
+- Keep students and partners in verification/approval statuses.
+- Log account, invitation, profile, lifecycle, and role-change events.
+- Create account notifications for invitations, role changes, profile completion, verification, partner approval, and lifecycle changes.
+
+If production email delivery is not configured, invitation records are still created and the UI exposes a copyable test invite link. Production email delivery can later be implemented with Supabase Auth `inviteUserByEmail`, a Supabase Edge Function, or an external email provider.

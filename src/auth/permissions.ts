@@ -64,7 +64,16 @@ export type Permission =
   | "ticket.create"
   | "ticket.manage"
   | "role.manage"
-  | "settings.manage";
+  | "settings.manage"
+  | "invitation.read"
+  | "invitation.create"
+  | "invitation.revoke"
+  | "invitation.resend"
+  | "audit.read"
+  | "account.manage"
+  | "role_change.request"
+  | "role_change.approve"
+  | "onboarding.manage";
 
 export const allPermissions: Permission[] = [
   "dashboard.read",
@@ -80,12 +89,13 @@ export const allPermissions: Permission[] = [
   "sprint.read","sprint.create","mentor.read","certificate.read",
   "readiness.read","readiness.update","deployment.read","feedback.read","ppo.read",
   "finance.read","finance.manage","invoice.read","invoice.manage","expense.read","expense.manage",
-  "asset.manage","document.read","document.manage","ticket.create","ticket.manage","role.manage","settings.manage"
+  "asset.manage","document.read","document.manage","ticket.create","ticket.manage","role.manage","settings.manage",
+  "invitation.read","invitation.create","invitation.revoke","invitation.resend","audit.read","account.manage","role_change.request","role_change.approve","onboarding.manage"
 ];
 
 export const rolePermissions: Record<RoleName, Permission[]> = {
   "Super Admin": allPermissions,
-  "HR Manager": ["dashboard.read","employee.read","employee.create","employee.update","employee.delete","intern.read","department.read","attendance.read_all","attendance.approve","leave.read_all","leave.approve","payroll.read_all","payroll.process","asset.manage","document.read","document.manage","ticket.create","ticket.manage"],
+  "HR Manager": ["dashboard.read","employee.read","employee.create","employee.update","employee.delete","intern.read","department.read","attendance.read_all","attendance.approve","leave.read_all","leave.approve","payroll.read_all","payroll.process","asset.manage","document.read","document.manage","ticket.create","ticket.manage","invitation.read","invitation.create","invitation.revoke","invitation.resend","account.manage","role_change.request","onboarding.manage"],
   "Project Manager": ["dashboard.read","project.read","project.create","project.update","task.read","task.create","task.update","timesheet.read_all","timesheet.approve","deployment.read","feedback.read","ticket.create"],
   Mentor: ["dashboard.read","student.read","student.create","sprint.read","sprint.create","readiness.read","readiness.update","mentor.read","certificate.read","ppo.read","task.read","task.create","task.update","ticket.create"],
   "Finance Manager": ["dashboard.read","finance.read","finance.manage","invoice.read","invoice.manage","expense.read","expense.manage","payroll.read_all","payroll.process","ticket.create"],
@@ -127,11 +137,14 @@ export const routePermissions: Record<string, Permission[]> = {
   "/helpdesk": ["ticket.create", "ticket.manage"],
   "/roles-permissions": ["role.manage"],
   "/settings": ["settings.manage"]
+  ,"/admin/invitations": ["invitation.read"]
+  ,"/admin/role-change-requests": ["role_change.request", "role_change.approve"]
+  ,"/admin/audit-logs": ["audit.read"]
 };
 
 export const roleSidebarPaths: Record<RoleName, string[]> = {
   "Super Admin": ["*"],
-  "HR Manager": ["/dashboard","/employees","/interns","/attendance","/leave","/payroll","/onboarding","/exit-management","/assets","/documents","/helpdesk"],
+  "HR Manager": ["/dashboard","/employees","/interns","/attendance","/leave","/payroll","/onboarding","/exit-management","/assets","/documents","/helpdesk","/admin/invitations","/admin/role-change-requests"],
   "Project Manager": ["/dashboard","/projects","/tasks","/timesheets","/deliverables","/intern-deployment","/client-feedback"],
   Mentor: ["/dashboard","/students","/career-sprints","/readiness-scores","/mentors","/certificates","/ppo-tracker"],
   "Finance Manager": ["/dashboard","/finance/invoices","/finance/expenses","/finance/payroll-cost","/finance/profitability"],

@@ -11,6 +11,12 @@ import { LoginPage } from "../features/auth/LoginPage";
 import { PayrollPage } from "../features/payroll/PayrollPage";
 import { TimesheetsPage } from "../features/timesheets/TimesheetsPage";
 import { FinancePage } from "../features/finance/FinancePage";
+import { InvitationsPage } from "../features/admin/InvitationsPage";
+import { RoleChangeRequestsPage } from "../features/admin/RoleChangeRequestsPage";
+import { AuditLogsPage } from "../features/admin/AuditLogsPage";
+import { CompleteProfilePage } from "../features/account/CompleteProfilePage";
+import { AccountDisabledPage } from "../features/account/AccountDisabledPage";
+import { PendingVerificationPage } from "../features/account/PendingVerificationPage";
 import { ModulePage } from "../features/shared/ModulePage";
 import { useAppStore } from "../store/useAppStore";
 import { inr } from "../lib/utils";
@@ -37,7 +43,11 @@ function Placeholder({ title, collection, description }: { title:string; collect
 
 export const routes: RouteObject[] = [
 { path:"/login", element:<LoginPage/> },
-{ element:<ProtectedRoute/>, children:[{ path:"/", element:<AppLayout/>, children:[{ element:<AuthorizedRoute/>, children:[
+{ element:<ProtectedRoute/>, children:[
+  { path:"/complete-profile", element:<CompleteProfilePage/> },
+  { path:"/account-disabled", element:<AccountDisabledPage/> },
+  { path:"/pending-verification", element:<PendingVerificationPage/> },
+  { path:"/", element:<AppLayout/>, children:[{ element:<AuthorizedRoute/>, children:[
   { index:true, element:<Navigate to="/dashboard" replace/> },
   { path:"dashboard", element:<Shell title="Executive Dashboard" description="Live command center for AntBox people, projects, sprints, readiness, deployment, and finance."><DashboardPage/></Shell> },
   { path:"employees", element:<Shell title="Employees" description="HRMS employee master with department, role, salary, documents, and employment status."><ModulePage title="Employees" description="" collection="employees" fields={employeeFields} editable stats={[{label:"Total Employees",value:useAppStore.getState().employees.length},{label:"Active Employees",value:useAppStore.getState().employees.filter(e=>e.status==="Active").length},{label:"Interns",value:useAppStore.getState().employees.filter(e=>e.employmentType==="Intern").length},{label:"Payroll Cost",value:inr(useAppStore.getState().payroll.reduce((a,b)=>a+b.netSalary,0))}]}/></Shell> },
@@ -64,6 +74,9 @@ export const routes: RouteObject[] = [
   { path:"documents", element:<Shell title="Documents" description="Offer letters, internship letters, NDAs, certificates, payslips, contracts, invoices, and portfolios."><ModulePage title="Documents" description="" collection="documents" fields={["title","documentType","owner","uploadedDate","status"]} stats={[{label:"Documents",value:useAppStore.getState().documents.length},{label:"Verified",value:useAppStore.getState().documents.filter(d=>d.status==="Verified").length},{label:"Uploaded",value:useAppStore.getState().documents.filter(d=>d.status==="Uploaded").length},{label:"Expired",value:0}]}/></Shell> },
   { path:"helpdesk", element:<Shell title="Helpdesk Tickets" description="HR, IT access, payroll, attendance correction, asset, and project blocker support queue."><ModulePage title="Helpdesk Tickets" description="" collection="tickets" fields={["ticketNumber","title","category","raisedBy","assignedTo","priority","createdAt","status"]} editable stats={[{label:"Open Tickets",value:useAppStore.getState().tickets.filter(t=>t.status!=="Closed" && t.status!=="Resolved").length},{label:"Resolved",value:useAppStore.getState().tickets.filter(t=>t.status==="Resolved").length},{label:"High Priority",value:useAppStore.getState().tickets.filter(t=>t.priority==="High").length},{label:"Avg SLA",value:"18h"}]}/></Shell> },
   { path:"roles-permissions", element:<Shell title="Roles & Permissions" description="Permission matrix for AntBox operating roles."><ModulePage title="Roles & Permissions" description="" collection="roles" fields={["name","permissions"]} stats={[{label:"Roles",value:useAppStore.getState().roles.length},{label:"Admin Roles",value:5},{label:"Portal Roles",value:4},{label:"Permission Areas",value:24}]}/></Shell> },
+  { path:"admin/invitations", element:<Shell title="Invitations" description="Invitation-only account provisioning, lifecycle control, and onboarding automation."><InvitationsPage/></Shell> },
+  { path:"admin/role-change-requests", element:<Shell title="Role Change Requests" description="Approval workflow for role changes and privileged access."><RoleChangeRequestsPage/></Shell> },
+  { path:"admin/audit-logs", element:<Shell title="Audit Logs" description="Account lifecycle, invitation, role, and onboarding audit trail."><AuditLogsPage/></Shell> },
   { path:"onboarding", element:<Placeholder title="Onboarding" collection="employees" description="Offer, joining, document verification, account setup, and induction workflow."/> },
   { path:"exit-management", element:<Placeholder title="Exit Management" collection="employees" description="Notice period, asset returns, access revocation, and final settlement tracking."/> },
   { path:"deliverables", element:<Placeholder title="Deliverables" collection="tasks" description="Client deliverables mapped to project tasks, owners, review status, and due dates."/> },
@@ -72,5 +85,6 @@ export const routes: RouteObject[] = [
   { path:"client-feedback", element:<Placeholder title="Client Feedback" collection="deployments" description="Client feedback scores by intern, project, sprint, and PPO opportunity."/> },
   { path:"settings", element:<Placeholder title="Settings" collection="roles" description="Workspace configuration, operating preferences, integrations, and data controls."/> },
   { path:"*", element:<Navigate to="/dashboard" replace/> }
-] }] }] }
+] }] }
+] }
 ];

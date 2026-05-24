@@ -12,7 +12,7 @@ const groups = [
   { title:"AntBox Academy", items:[["Career Sprints","/career-sprints",GraduationCap],["Mentors","/mentors",Users],["Readiness Scores","/readiness-scores",BarChart3],["Certificates","/certificates",FileText]] },
   { title:"IaaS Operations", items:[["Corporate Partners","/corporate-partners",Building2],["Intern Deployment","/intern-deployment",BriefcaseBusiness],["Client Feedback","/client-feedback",FileText],["PPO Tracker","/ppo-tracker",BarChart3]] },
   { title:"Finance", items:[["Invoices","/finance/invoices",WalletCards],["Expenses","/finance/expenses",WalletCards],["Payroll Cost","/finance/payroll-cost",WalletCards],["Profitability","/finance/profitability",WalletCards]] },
-  { title:"Admin", items:[["Assets","/assets",BriefcaseBusiness],["Documents","/documents",FileText],["Helpdesk Tickets","/helpdesk",HelpCircle],["Roles & Permissions","/roles-permissions",LockKeyhole],["Settings","/settings",ChevronDown]] }
+  { title:"Admin", items:[["Assets","/assets",BriefcaseBusiness],["Documents","/documents",FileText],["Helpdesk Tickets","/helpdesk",HelpCircle],["Invitations","/admin/invitations",Users],["Role Changes","/admin/role-change-requests",LockKeyhole],["Audit Logs","/admin/audit-logs",FileText],["Roles & Permissions","/roles-permissions",LockKeyhole],["Settings","/settings",ChevronDown]] }
 ] as const;
 
 export function Sidebar({ open, onClose }: { open:boolean; onClose:()=>void }) {
