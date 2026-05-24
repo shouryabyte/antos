@@ -1,16 +1,18 @@
-import { uid } from "./utils";
-import { useAppStore } from "../store/useAppStore";
+import { supabase } from "./supabase";
 import type { Notification } from "../types";
 
 type NotificationInput = Omit<Notification, "id" | "isRead" | "createdAt"> & { isRead?: boolean };
 
-export function createNotification(input: NotificationInput) {
-  const store = useAppStore.getState();
-  store.addItem("notifications", {
-    id: uid("notif"),
-    ...input,
-    isRead: input.isRead ?? false,
-    createdAt: new Date().toISOString()
+export async function createNotification(input: NotificationInput) {
+  if (!supabase) return;
+  await supabase.from("notifications").insert({
+    user_id: input.userId,
+    role_target: input.roleTarget,
+    title: input.title,
+    message: input.message,
+    type: input.type,
+    related_module: input.relatedModule,
+    is_read: input.isRead ?? false
   });
 }
 

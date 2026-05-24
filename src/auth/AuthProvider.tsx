@@ -2,7 +2,6 @@ import { createContext, useCallback, useEffect, useMemo, useState, type ReactNod
 import type { User } from "@supabase/supabase-js";
 import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import { acceptPendingInvitationForUser, generateOnboardingTasks, logAudit } from "../lib/onboardingAutomation";
-import { useAppStore } from "../store/useAppStore";
 import { demoUsers, rolePermissions, type DemoUser, type Permission, type RoleName } from "./permissions";
 
 const LOCAL_KEY = "antos-auth-session";
@@ -68,7 +67,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(nextUser);
     setProfile(nextProfile);
     setPermissions(nextPermissions);
-    if (nextProfile) useAppStore.getState().setRole(nextProfile.role);
   }, []);
 
   const loadSupabaseProfile = useCallback(async (authUser: User) => {

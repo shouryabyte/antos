@@ -1,10 +1,16 @@
 import { mockData } from "./mockData";
-const KEY = "antos-store-v1";
 export type AppData = typeof mockData;
+
+// Demo-only scaffold data for legacy placeholder pages. Production ERP records
+// are read/written through Supabase services, not browser storage.
 export function loadData(): AppData {
-  const raw = localStorage.getItem(KEY);
-  if (!raw) { localStorage.setItem(KEY, JSON.stringify(mockData)); return mockData; }
-  try { return { ...mockData, ...JSON.parse(raw) }; } catch { return mockData; }
+  return mockData;
 }
-export function saveData(data: AppData) { localStorage.setItem(KEY, JSON.stringify(data)); }
-export function resetData() { localStorage.setItem(KEY, JSON.stringify(mockData)); return mockData; }
+
+export function saveData(_data: AppData) {
+  // Intentionally no-op: do not persist business records to localStorage.
+}
+
+export function resetData() {
+  return mockData;
+}

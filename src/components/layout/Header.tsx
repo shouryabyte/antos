@@ -3,17 +3,12 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../auth/useAuth";
-import { visibleNotifications } from "../../lib/notifications";
 import { supabase } from "../../lib/supabase";
-import { useAppStore } from "../../store/useAppStore";
 export function Header({ onMenu }: { onMenu:()=>void }) {
   const { profile, role, logout } = useAuth();
   const [openNotifications, setOpenNotifications] = useState(false);
   const [accountNotifications, setAccountNotifications] = useState<any[]>([]);
-  const notifications = useAppStore((s) => s.notifications);
-  const updateItem = useAppStore((s) => s.updateItem);
-  const myNotifications = visibleNotifications(notifications, profile?.id, role);
-  const allNotifications = [...accountNotifications.map((item)=>({ ...item, source:"supabase", isRead:item.is_read, relatedModule:item.related_module, createdAt:item.created_at })), ...myNotifications.map((item)=>({ ...item, source:"local" }))];
+  const allNotifications = accountNotifications.map((item)=>({ ...item, source:"supabase", isRead:item.is_read, relatedModule:item.related_module, createdAt:item.created_at }));
   const unreadCount = allNotifications.filter((item) => !item.isRead).length;
   const navigate = useNavigate();
   useEffect(() => {
@@ -44,7 +39,7 @@ export function Header({ onMenu }: { onMenu:()=>void }) {
           {openNotifications && <div className="absolute right-0 mt-2 w-80 rounded-2xl border border-slate-200 bg-white p-3 shadow-soft">
             <div className="mb-2 flex items-center justify-between"><p className="font-black">Notifications</p><span className="text-xs font-bold text-slate-500">{unreadCount} unread</span></div>
             <div className="max-h-80 space-y-2 overflow-y-auto">
-              {allNotifications.slice().sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).slice(0,8).map((item)=><button key={`${item.source}-${item.id}`} onClick={async ()=>{ item.source === "supabase" && supabase ? (await supabase.from("notifications").update({ is_read:true }).eq("id", item.id), setAccountNotifications((rows)=>rows.map((row)=>row.id===item.id ? { ...row, is_read:true } : row))) : updateItem("notifications", item.id, { isRead:true }); }} className="w-full rounded-xl border border-slate-100 bg-slate-50 p-3 text-left hover:bg-emerald-50">
+              {allNotifications.slice().sort((a,b)=>b.createdAt.localeCompare(a.createdAt)).slice(0,8).map((item)=><button key={`${item.source}-${item.id}`} onClick={async ()=>{ if (supabase) await supabase.from("notifications").update({ is_read:true }).eq("id", item.id); setAccountNotifications((rows)=>rows.map((row)=>row.id===item.id ? { ...row, is_read:true } : row)); }} className="w-full rounded-xl border border-slate-100 bg-slate-50 p-3 text-left hover:bg-emerald-50">
                 <div className="flex items-start justify-between gap-2"><p className="text-sm font-black text-slate-900">{item.title}</p>{!item.isRead && <span className="mt-1 h-2 w-2 rounded-full bg-emerald-500"/>}</div>
                 <p className="mt-1 text-xs text-slate-600">{item.message}</p>
               </button>)}

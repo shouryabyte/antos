@@ -23,10 +23,10 @@ AntOS is a centralized ERP prototype customized for AntBox's talent-tech and int
 - shadcn/ui-style local components
 - React Router
 - Zustand
-- localStorage demo persistence
+- Supabase as the primary ERP data source
 - Recharts
 - lucide-react
-- Supabase-ready architecture
+- Demo fallback when Supabase env variables are not configured
 
 ## Demo Credentials
 All demo accounts use password `password`.
@@ -79,19 +79,29 @@ npm run preview
 ```
 
 ## Supabase Readiness
-The app runs without Supabase in demo mode. `src/lib/supabase.ts` reads:
+Supabase is the primary data source for production ERP records. `src/lib/supabase.ts` reads:
 
 ```env
 VITE_SUPABASE_URL=
 VITE_SUPABASE_ANON_KEY=
 ```
 
-If those variables are empty, AntOS stays in localStorage mode. `supabase/schema.sql` contains the production-ready table structure and RLS policy plan.
+When these variables are configured, Auth and migrated ERP modules read/write Supabase directly. `supabase/schema.sql` contains the production-ready table structure and RLS policy plan.
+
+If the variables are empty, AntOS uses demo auth/session fallback so the UI can still open for local review. Browser storage is not used for production ERP records. Any remaining localStorage usage is limited to demo authentication/session persistence; legacy mock data is an in-memory scaffold for non-migrated placeholder pages only and is not persisted as business data.
+
+Migrated Supabase-backed workflows:
+- Dashboard aggregates
+- Attendance and regularization
+- Leave and leave-to-attendance sync
+- Payroll generation and processing
+- Timesheets and approvals
+- Finance, invoices, expenses, and profitability
+- Notifications surfaced from Supabase
+- Onboarding/account lifecycle
 
 ## Future Production Plan
-- Connect Supabase Auth
-- Apply Supabase RLS policies
-- Replace localStorage services with Supabase queries
+- Continue replacing legacy placeholder pages with dedicated Supabase services
 - Add file uploads using Supabase Storage
 - Add email notifications
 - Add audit logs
@@ -99,7 +109,7 @@ If those variables are empty, AntOS stays in localStorage mode. `supabase/schema
 - Add advanced reporting
 
 ## Supabase Backend Setup
-Phase 12A adds a real Supabase backend foundation while keeping the current frontend in demo/localStorage mode.
+Run the Supabase backend setup before using production data workflows.
 
 1. Create a Supabase project.
 2. Open Supabase SQL Editor and run `supabase/schema.sql`.
