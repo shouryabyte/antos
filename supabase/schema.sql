@@ -888,8 +888,6 @@ create policy "employees_read_self_and_managers" on public.employees
     or public.is_mentor()
     or public.is_finance_manager()
   );
-create policy "employees_dashboard_read" on public.employees
-  for select using (auth.uid() is not null);
 create policy "employees_self_update_profile_fields" on public.employees
   for update using (id = public.get_current_employee_id())
   with check (id = public.get_current_employee_id());
@@ -904,9 +902,6 @@ create policy "attendance_self_insert" on public.attendance
   for insert with check (employee_id = public.get_current_employee_id());
 create policy "attendance_self_update" on public.attendance
   for update using (employee_id = public.get_current_employee_id()) with check (employee_id = public.get_current_employee_id());
-create policy "attendance_dashboard_read" on public.attendance
-  for select using (auth.uid() is not null);
-
 create policy "leave_hr_manage" on public.leave_requests
   for all using (public.is_hr_manager()) with check (public.is_hr_manager());
 create policy "leave_finance_payroll_read" on public.leave_requests
@@ -918,9 +913,6 @@ create policy "leave_self_insert" on public.leave_requests
 create policy "leave_self_update_pending" on public.leave_requests
   for update using (employee_id = public.get_current_employee_id() and status = 'Pending')
   with check (employee_id = public.get_current_employee_id());
-create policy "leave_dashboard_read" on public.leave_requests
-  for select using (auth.uid() is not null);
-
 create policy "payroll_hr_finance_read" on public.payroll
   for select using (public.is_hr_manager() or public.is_finance_manager());
 create policy "payroll_hr_process" on public.payroll
@@ -931,9 +923,6 @@ create policy "payroll_finance_update" on public.payroll
   for update using (public.is_finance_manager()) with check (public.is_finance_manager());
 create policy "payroll_self_read" on public.payroll
   for select using (employee_id = public.get_current_employee_id());
-create policy "payroll_dashboard_read" on public.payroll
-  for select using (auth.uid() is not null);
-
 create policy "projects_pm_manage" on public.projects
   for all using (public.is_project_manager()) with check (public.is_project_manager());
 create policy "projects_finance_read_profitability" on public.projects
@@ -942,9 +931,6 @@ create policy "projects_partner_read_assigned" on public.projects
   for select using (corporate_partner_id = public.get_current_partner_id());
 create policy "projects_employee_member_read" on public.projects
   for select using (public.get_current_employee_id() = any(assigned_members) or manager_id = public.get_current_employee_id());
-create policy "projects_dashboard_read" on public.projects
-  for select using (auth.uid() is not null);
-
 create policy "tasks_pm_manage" on public.tasks
   for all using (public.is_project_manager()) with check (public.is_project_manager());
 create policy "tasks_finance_read_profitability" on public.tasks
@@ -965,25 +951,15 @@ create policy "timesheets_self_insert" on public.timesheets
 create policy "timesheets_self_update_pending" on public.timesheets
   for update using (employee_id = public.get_current_employee_id() and approval_status = 'Pending')
   with check (employee_id = public.get_current_employee_id());
-create policy "timesheets_dashboard_read" on public.timesheets
-  for select using (auth.uid() is not null);
-
 create policy "invoices_finance_manage" on public.invoices
   for all using (public.is_finance_manager()) with check (public.is_finance_manager());
 create policy "invoices_partner_read" on public.invoices
   for select using (corporate_partner_id = public.get_current_partner_id());
-create policy "invoices_dashboard_read" on public.invoices
-  for select using (auth.uid() is not null);
-
 create policy "expenses_finance_manage" on public.expenses
   for all using (public.is_finance_manager()) with check (public.is_finance_manager());
-create policy "expenses_dashboard_read" on public.expenses
-  for select using (auth.uid() is not null);
 
 create policy "career_sprints_finance_read_profitability" on public.career_sprints
   for select using (public.is_finance_manager());
-create policy "career_sprints_dashboard_read" on public.career_sprints
-  for select using (auth.uid() is not null);
 
 create policy "notifications_read_targeted" on public.notifications
   for select using (user_id = auth.uid() or role_target = public.get_current_role());
@@ -1020,8 +996,6 @@ create policy "notifications_self_service_insert" on public.notifications
 
 create policy "invitations_admin_read" on public.user_invitations
   for select using (public.is_super_admin() or public.is_hr_manager() or lower(email) = lower((auth.jwt() ->> 'email')));
-create policy "invitations_dashboard_read" on public.user_invitations
-  for select using (auth.uid() is not null);
 create policy "invitations_admin_insert" on public.user_invitations
   for insert with check (public.is_super_admin() or public.is_hr_manager());
 create policy "invitations_admin_update" on public.user_invitations
@@ -1030,8 +1004,6 @@ create policy "invitations_admin_update" on public.user_invitations
 
 create policy "role_changes_admin_read" on public.role_change_requests
   for select using (public.is_super_admin() or public.is_hr_manager() or user_id = auth.uid());
-create policy "role_changes_dashboard_read" on public.role_change_requests
-  for select using (auth.uid() is not null);
 create policy "role_changes_hr_insert" on public.role_change_requests
   for insert with check (public.is_super_admin() or public.is_hr_manager());
 create policy "role_changes_super_update" on public.role_change_requests
@@ -1063,16 +1035,10 @@ create policy "students_self_read" on public.students
 create policy "students_self_update_profile_fields" on public.students
   for update using (id = public.get_current_student_id())
   with check (id = public.get_current_student_id());
-create policy "students_dashboard_read" on public.students
-  for select using (auth.uid() is not null);
-
 create policy "partners_admin_manage" on public.corporate_partners
   for all using (public.is_super_admin() or public.is_hr_manager()) with check (public.is_super_admin() or public.is_hr_manager());
 create policy "partners_self_read_update" on public.corporate_partners
   for all using (id = public.get_current_partner_id()) with check (id = public.get_current_partner_id());
-create policy "partners_dashboard_read" on public.corporate_partners
-  for select using (auth.uid() is not null);
-
 create policy "career_sprints_mentor_manage" on public.career_sprints
   for all using (public.is_mentor()) with check (public.is_mentor());
 create policy "career_sprints_student_enrolled_read" on public.career_sprints
@@ -1094,25 +1060,16 @@ create policy "deployments_partner_read" on public.intern_deployments
   for select using (corporate_partner_id = public.get_current_partner_id());
 create policy "deployments_student_read" on public.intern_deployments
   for select using (student_id = public.get_current_student_id());
-create policy "deployments_dashboard_read" on public.intern_deployments
-  for select using (auth.uid() is not null);
-
 create policy "readiness_mentor_manage" on public.readiness_scores
   for all using (public.is_mentor()) with check (public.is_mentor());
 create policy "readiness_student_read" on public.readiness_scores
   for select using (student_id = public.get_current_student_id());
-create policy "readiness_dashboard_read" on public.readiness_scores
-  for select using (auth.uid() is not null);
-
 create policy "ppo_mentor_manage" on public.ppo_records
   for all using (public.is_mentor()) with check (public.is_mentor());
 create policy "ppo_student_read" on public.ppo_records
   for select using (student_id = public.get_current_student_id());
 create policy "ppo_partner_read" on public.ppo_records
   for select using (corporate_partner_id = public.get_current_partner_id());
-create policy "ppo_dashboard_read" on public.ppo_records
-  for select using (auth.uid() is not null);
-
 create policy "assets_hr_manage" on public.assets
   for all using (public.is_hr_manager()) with check (public.is_hr_manager());
 create policy "documents_hr_manage" on public.documents

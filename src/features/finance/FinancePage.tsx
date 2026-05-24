@@ -34,6 +34,7 @@ import {
   type ProjectProfitabilityRow,
   type SprintProfitabilityRow
 } from "../../services/financeService";
+import { getPayrollSummary, monthLabel } from "../../services/payrollService";
 import type { Expense, Invoice } from "../../types";
 
 const invoiceSchema = z.object({
@@ -68,6 +69,7 @@ const emptySummary: FinanceSummary = {
 export function FinancePage() {
   const { profile, partnerId, hasPermission, hasRole } = useAuth();
   const canReadFinance = hasPermission("finance.read") || hasRole("Super Admin");
+  const canReadPayrollCost = hasPermission("payroll.read_all") || canReadFinance;
   const canReadInvoices = hasPermission("invoice.read") || canReadFinance;
   const canManageInvoices = hasPermission("invoice.manage") || hasRole("Super Admin");
   const canManageFinance = hasPermission("finance.manage") || hasRole("Super Admin");
@@ -113,6 +115,18 @@ export function FinancePage() {
         setSummary(nextSummary);
         setProjectRows(nextProjectRows);
         setSprintRows(nextSprintRows);
+      } else if (canReadPayrollCost) {
+        const payrollSummary = await getPayrollSummary(monthLabel(new Date()));
+        setExpenses([]);
+        setSummary({
+          ...emptySummary,
+          payrollCost: payrollSummary.payrollCost,
+          pendingInvoices: invoiceRows.filter((invoice) => invoice.paymentStatus === "Sent" || invoice.paymentStatus === "Overdue").length,
+          paidInvoices: invoiceRows.filter((invoice) => invoice.paymentStatus === "Paid").length,
+          overdueInvoices: invoiceRows.filter((invoice) => invoice.paymentStatus === "Overdue").length
+        });
+        setProjectRows([]);
+        setSprintRows([]);
       } else {
         setExpenses([]);
         setSummary({ ...emptySummary, pendingInvoices: invoiceRows.filter((invoice) => invoice.paymentStatus === "Sent" || invoice.paymentStatus === "Overdue").length, paidInvoices: invoiceRows.filter((invoice) => invoice.paymentStatus === "Paid").length, overdueInvoices: invoiceRows.filter((invoice) => invoice.paymentStatus === "Overdue").length });
@@ -124,7 +138,7 @@ export function FinancePage() {
     } finally {
       setLoading(false);
     }
-  }, [canReadFinance, canReadInvoices, partnerId]);
+  }, [canReadFinance, canReadInvoices, canReadPayrollCost, partnerId]);
 
   useEffect(() => {
     loadFinance();

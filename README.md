@@ -23,13 +23,15 @@ AntOS is a centralized ERP prototype customized for AntBox's talent-tech and int
 - shadcn/ui-style local components
 - React Router
 - Zustand
-- Supabase as the primary ERP data source
+- Supabase Auth, Postgres, and RLS as the production ERP data layer
 - Recharts
 - lucide-react
 - Demo fallback when Supabase env variables are not configured
 
 ## Demo Credentials
-All demo accounts use password `password`.
+Local demo fallback accounts use password `password` when Supabase env variables are not configured.
+
+Seeded Supabase accounts use password `Antos@12345`.
 
 | Role | Email |
 | --- | --- |
@@ -100,6 +102,8 @@ Migrated Supabase-backed workflows:
 - Notifications surfaced from Supabase
 - Onboarding/account lifecycle
 
+The frontend must only use the public Supabase URL and anon key. The service role key is only for backend/admin scripts and must never be exposed through `VITE_` variables, bundled frontend code, browser storage, screenshots, or committed files.
+
 ## Future Production Plan
 - Continue replacing legacy placeholder pages with dedicated Supabase services
 - Add file uploads using Supabase Storage
@@ -144,6 +148,36 @@ Seeded Supabase login password for every user is `Antos@12345`.
 | Corporate Partner | `partner@antos.dev` |
 
 Do not put the service role key in `VITE_` variables, frontend code, or committed files. `.env.seed` and `.env.local` are ignored by git.
+
+## Architecture Notes
+
+- Authentication comes from Supabase Auth when `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` are present.
+- User role, lifecycle status, and entity mappings are loaded from Supabase `profiles`.
+- Frontend authorization uses route-level permission checks plus role-aware sidebar filtering.
+- Database authorization is enforced with Supabase RLS policies in `supabase/schema.sql`.
+- Production ERP records for Attendance, Leave, Payroll, Timesheets, Finance, Notifications, Onboarding, and Dashboard aggregates are read from Supabase.
+- Legacy mock data remains only as an in-memory scaffold for non-migrated placeholder pages and is not persisted to browser storage.
+
+## Manual Testing
+
+Use the role-wise checklist before demo or deployment:
+
+- [docs/testing/MANUAL_TEST_CHECKLIST.md](docs/testing/MANUAL_TEST_CHECKLIST.md)
+
+The checklist covers seeded credentials, allowed pages, restricted pages, core workflows, lifecycle redirects, route smoke tests, and expected results for all supported roles.
+
+## Deployment Notes
+
+1. Run `npm run build` locally or in CI before deploying.
+2. Apply `supabase/schema.sql` to the target Supabase project.
+3. Seed only with `.env.seed` on a trusted machine or CI secret context.
+4. Configure deployed frontend env variables with only:
+   - `VITE_SUPABASE_URL`
+   - `VITE_SUPABASE_ANON_KEY`
+5. Verify SPA route fallback is configured by the hosting provider so refreshed protected routes load `index.html`.
+6. Run the manual testing checklist with at least Super Admin, HR Manager, Project Manager, Finance Manager, Employee, Student, and Corporate Partner accounts.
+
+Security warning: never expose `SUPABASE_SERVICE_ROLE_KEY` to frontend code, committed files, public logs, or browser-accessible environment variables.
 
 ## Professional User Onboarding
 AntOS now uses invitation-first account provisioning for employees, interns, and privileged roles. Public users cannot choose admin roles.
