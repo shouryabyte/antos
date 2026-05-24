@@ -439,6 +439,22 @@ create table if not exists public.invoices (
   updated_at timestamptz default now()
 );
 
+alter table public.invoices add column if not exists invoice_number text;
+alter table public.invoices add column if not exists client text;
+alter table public.invoices add column if not exists corporate_partner_id uuid references public.corporate_partners(id) on delete set null;
+alter table public.invoices add column if not exists project_id uuid references public.projects(id) on delete set null;
+alter table public.invoices add column if not exists sprint_id uuid references public.career_sprints(id) on delete set null;
+alter table public.invoices add column if not exists project_or_sprint text;
+alter table public.invoices add column if not exists amount numeric default 0;
+alter table public.invoices add column if not exists due_date date;
+alter table public.invoices add column if not exists payment_status text default 'Draft';
+alter table public.invoices add column if not exists revenue_category text;
+alter table public.invoices add column if not exists paid_at timestamptz;
+alter table public.invoices add column if not exists created_by text;
+alter table public.invoices add column if not exists created_by_profile_id uuid references public.profiles(id) on delete set null;
+alter table public.invoices add column if not exists notes text;
+alter table public.invoices add column if not exists updated_at timestamptz default now();
+
 create table if not exists public.expenses (
   id uuid primary key default gen_random_uuid(),
   category text,
@@ -455,6 +471,19 @@ create table if not exists public.expenses (
   created_at timestamptz default now(),
   updated_at timestamptz default now()
 );
+
+alter table public.expenses add column if not exists category text;
+alter table public.expenses add column if not exists description text;
+alter table public.expenses add column if not exists amount numeric default 0;
+alter table public.expenses add column if not exists date date;
+alter table public.expenses add column if not exists status text default 'Pending';
+alter table public.expenses add column if not exists created_by text;
+alter table public.expenses add column if not exists created_by_profile_id uuid references public.profiles(id) on delete set null;
+alter table public.expenses add column if not exists approved_by text;
+alter table public.expenses add column if not exists approved_by_profile_id uuid references public.profiles(id) on delete set null;
+alter table public.expenses add column if not exists approved_at timestamptz;
+alter table public.expenses add column if not exists paid_at timestamptz;
+alter table public.expenses add column if not exists updated_at timestamptz default now();
 
 create table if not exists public.assets (
   id uuid primary key default gen_random_uuid(),
@@ -899,6 +928,8 @@ create policy "payroll_self_read" on public.payroll
 
 create policy "projects_pm_manage" on public.projects
   for all using (public.is_project_manager()) with check (public.is_project_manager());
+create policy "projects_finance_read_profitability" on public.projects
+  for select using (public.is_finance_manager());
 create policy "projects_partner_read_assigned" on public.projects
   for select using (corporate_partner_id = public.get_current_partner_id());
 create policy "projects_employee_member_read" on public.projects
@@ -906,6 +937,8 @@ create policy "projects_employee_member_read" on public.projects
 
 create policy "tasks_pm_manage" on public.tasks
   for all using (public.is_project_manager()) with check (public.is_project_manager());
+create policy "tasks_finance_read_profitability" on public.tasks
+  for select using (public.is_finance_manager());
 create policy "tasks_self_read" on public.tasks
   for select using (assigned_to = public.get_current_employee_id());
 create policy "tasks_mentor_manage" on public.tasks
@@ -913,6 +946,8 @@ create policy "tasks_mentor_manage" on public.tasks
 
 create policy "timesheets_pm_manage" on public.timesheets
   for all using (public.is_project_manager()) with check (public.is_project_manager());
+create policy "timesheets_finance_read_profitability" on public.timesheets
+  for select using (public.is_finance_manager());
 create policy "timesheets_self_read" on public.timesheets
   for select using (employee_id = public.get_current_employee_id());
 create policy "timesheets_self_insert" on public.timesheets
@@ -928,6 +963,9 @@ create policy "invoices_partner_read" on public.invoices
 
 create policy "expenses_finance_manage" on public.expenses
   for all using (public.is_finance_manager()) with check (public.is_finance_manager());
+
+create policy "career_sprints_finance_read_profitability" on public.career_sprints
+  for select using (public.is_finance_manager());
 
 create policy "notifications_read_targeted" on public.notifications
   for select using (user_id = auth.uid() or role_target = public.get_current_role());
