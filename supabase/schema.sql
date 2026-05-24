@@ -160,6 +160,13 @@ create table if not exists public.attendance (
   unique(employee_id, date)
 );
 
+alter table public.attendance add column if not exists corrected_check_in time;
+alter table public.attendance add column if not exists corrected_check_out time;
+alter table public.attendance add column if not exists regularization_reason text;
+alter table public.attendance add column if not exists approved_by text;
+alter table public.attendance add column if not exists remarks text;
+alter table public.attendance add column if not exists leave_request_id uuid;
+
 create table if not exists public.leave_requests (
   id uuid primary key default gen_random_uuid(),
   employee_id uuid not null references public.employees(id) on delete cascade,
@@ -858,6 +865,12 @@ create policy "notifications_update_own" on public.notifications
 create policy "notifications_managers_insert" on public.notifications
   for insert with check (
     public.is_hr_manager() or public.is_project_manager() or public.is_mentor() or public.is_finance_manager()
+  );
+create policy "notifications_attendance_request_insert" on public.notifications
+  for insert with check (
+    auth.uid() is not null
+    and related_module = 'Attendance'
+    and role_target in ('HR Manager', 'Super Admin')
   );
 
 create policy "invitations_admin_read" on public.user_invitations
