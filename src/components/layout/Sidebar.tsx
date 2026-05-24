@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { BarChart3, BriefcaseBusiness, Building2, ChevronDown, FileText, GraduationCap, HelpCircle, LayoutDashboard, LockKeyhole, Users, WalletCards } from "lucide-react";
 import { roleSidebarPaths } from "../../auth/permissions";
 import { useAuth } from "../../auth/useAuth";
@@ -25,7 +25,7 @@ export function Sidebar({ open, onClose }: { open:boolean; onClose:()=>void }) {
 
   return <aside className={cn("fixed inset-y-0 left-0 z-40 w-72 -translate-x-full bg-[#050505] text-white transition lg:sticky lg:top-0 lg:h-screen lg:translate-x-0", open && "translate-x-0")}>
     <div className="flex h-full flex-col">
-      <div className="border-b border-white/10 p-5"><div className="flex items-center gap-3"><div className="grid h-11 w-11 place-items-center rounded-2xl bg-white text-2xl font-black text-black">a</div><div><p className="text-lg font-black">AntOS</p><p className="text-xs text-white/50">AntBox Operating System</p></div></div></div>
+      <div className="border-b border-white/10 p-5"><Link to="/dashboard" onClick={onClose} className="flex items-center gap-3"><img src="/logo.svg" alt="AntBox" className="h-11 w-11 rounded-2xl object-contain" /><div><p className="text-lg font-black">AntOS</p><p className="text-xs text-white/50">AntBox Operating System</p></div></Link></div>
       <nav className="scrollbar-thin flex-1 space-y-5 overflow-y-auto p-4">
         {visibleGroups.map((g,idx)=><div key={idx}>{g.title && <p className="mb-2 px-3 text-[11px] font-black uppercase tracking-wider text-white/40">{g.title}</p>}<div className="space-y-1">{g.items.map(([label,path,Icon])=><NavLink onClick={onClose} key={path} to={path} className={({isActive})=>cn("flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-white/70 hover:bg-white/10 hover:text-white", isActive && "bg-white text-black hover:bg-white hover:text-black")}><Icon size={17}/>{label}</NavLink>)}</div></div>)}
       </nav>

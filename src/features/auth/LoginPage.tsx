@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowRight, Loader2, LockKeyhole, ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { z } from "zod";
 import { useAuth } from "../../auth/useAuth";
 import { demoUsers, type RoleName } from "../../auth/permissions";
@@ -57,7 +57,7 @@ export function LoginPage() {
     <div className="mx-auto flex min-h-[calc(100vh-2rem)] max-w-6xl items-center">
       <div className="grid w-full overflow-hidden rounded-[2rem] border border-white bg-white/70 shadow-soft lg:grid-cols-[1.05fr_.95fr]">
         <section className="bg-[#050505] p-8 text-white lg:p-12">
-          <div className="flex items-center gap-3"><div className="grid h-12 w-12 place-items-center rounded-2xl bg-white text-2xl font-black text-black">a</div><div><p className="text-xl font-black">AntOS</p><p className="text-xs text-white/50">AntBox Operating System</p></div></div>
+          <Link to="/dashboard" className="flex items-center gap-3"><img src="/logo.svg" alt="AntBox" className="h-12 w-12 rounded-2xl object-contain" /><div><p className="text-xl font-black">AntOS</p><p className="text-xs text-white/50">AntBox Operating System</p></div></Link>
           <p className="mt-16 text-xs font-black uppercase tracking-[.25em] text-purple-300">AI Talent Readiness Platform</p>
           <h1 className="mt-4 text-4xl font-black tracking-tight lg:text-6xl">One secure operating system for AntBox teams.</h1>
           <p className="mt-5 max-w-xl text-white/65">Sign in to access employees, students, sprints, projects, deployment, finance, and corporate talent operations.</p>
