@@ -1,0 +1,106 @@
+<mxfile host="app.diagrams.net" modified="2026-05-24T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="approval-workflows" name="Approval Workflows">
+    <mxGraphModel dx="1600" dy="1200" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1350" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="AntOS Approval Workflows" style="text;html=1;strokeColor=none;fillColor=none;fontSize=24;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="420" y="20" width="960" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="lane-requester" value="Requester" style="swimlane;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="280" height="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="lane-db" value="Database" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#475569;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="80" width="280" height="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="lane-approver" value="Approver" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f0fdf4;strokeColor=#16a34a;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="660" y="80" width="280" height="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="lane-system" value="System Automation" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff7ed;strokeColor=#ea580c;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="970" y="80" width="330" height="1120" as="geometry" />
+        </mxCell>
+        <mxCell id="lane-audit" value="Notification / Audit" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fdf2f8;strokeColor=#db2777;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="80" width="330" height="1120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="r-invite" value="Super Admin / HR&#xa;Create invitation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="lane-requester"><mxGeometry x="35" y="55" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="d-invite" value="user_invitations&#xa;Pending" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#475569;" vertex="1" parent="lane-db"><mxGeometry x="35" y="55" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="a-invite" value="User accepts invite&#xa;Completes profile" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#16a34a;" vertex="1" parent="lane-approver"><mxGeometry x="35" y="55" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="s-invite" value="Profile active&#xa;Onboarding tasks created" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="lane-system"><mxGeometry x="45" y="55" width="240" height="70" as="geometry" /></mxCell>
+        <mxCell id="n-invite" value="Audit log&#xa;Notification" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#db2777;" vertex="1" parent="lane-audit"><mxGeometry x="60" y="55" width="210" height="70" as="geometry" /></mxCell>
+
+        <mxCell id="r-role" value="HR requests&#xa;Role change" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="lane-requester"><mxGeometry x="35" y="190" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="d-role" value="role_change_requests&#xa;Pending" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#475569;" vertex="1" parent="lane-db"><mxGeometry x="35" y="190" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="a-role" value="Super Admin&#xa;Approve / reject" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#16a34a;" vertex="1" parent="lane-approver"><mxGeometry x="35" y="190" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="s-role" value="If approved&#xa;profiles.role_id updates&#xa;Permissions refresh" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="lane-system"><mxGeometry x="45" y="185" width="240" height="80" as="geometry" /></mxCell>
+        <mxCell id="n-role" value="Audit log&#xa;Notification" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#db2777;" vertex="1" parent="lane-audit"><mxGeometry x="60" y="190" width="210" height="70" as="geometry" /></mxCell>
+
+        <mxCell id="r-att" value="Employee / Intern&#xa;Regularization request" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="lane-requester"><mxGeometry x="35" y="325" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="d-att" value="attendance&#xa;regularization Pending" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#475569;" vertex="1" parent="lane-db"><mxGeometry x="35" y="325" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="a-att" value="HR / Super Admin&#xa;Approve / reject" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#16a34a;" vertex="1" parent="lane-approver"><mxGeometry x="35" y="325" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="s-att" value="Attendance record updates&#xa;Status recalculated" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="lane-system"><mxGeometry x="45" y="325" width="240" height="70" as="geometry" /></mxCell>
+        <mxCell id="n-att" value="Notification&#xa;Audit log" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#db2777;" vertex="1" parent="lane-audit"><mxGeometry x="60" y="325" width="210" height="70" as="geometry" /></mxCell>
+
+        <mxCell id="r-leave" value="Employee / Intern&#xa;Applies leave" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="lane-requester"><mxGeometry x="35" y="460" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="d-leave" value="leave_requests&#xa;Pending" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#475569;" vertex="1" parent="lane-db"><mxGeometry x="35" y="460" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="a-leave" value="HR / Super Admin&#xa;Approve / reject" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#16a34a;" vertex="1" parent="lane-approver"><mxGeometry x="35" y="460" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="s-leave" value="Approved leave =&gt; attendance Leave&#xa;Unpaid leave =&gt; LOP&#xa;Payroll uses LOP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="lane-system"><mxGeometry x="45" y="455" width="240" height="80" as="geometry" /></mxCell>
+        <mxCell id="n-leave" value="Notification&#xa;Audit log" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#db2777;" vertex="1" parent="lane-audit"><mxGeometry x="60" y="460" width="210" height="70" as="geometry" /></mxCell>
+
+        <mxCell id="r-time" value="Employee / Intern&#xa;Submits timesheet" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="lane-requester"><mxGeometry x="35" y="600" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="d-time" value="timesheets&#xa;Pending" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#475569;" vertex="1" parent="lane-db"><mxGeometry x="35" y="600" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="a-time" value="Project Manager / Super Admin&#xa;Approve / reject" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#16a34a;" vertex="1" parent="lane-approver"><mxGeometry x="35" y="595" width="210" height="80" as="geometry" /></mxCell>
+        <mxCell id="s-time" value="Approved hours =&gt; utilization&#xa;Finance profitability uses approved hours" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="lane-system"><mxGeometry x="45" y="595" width="240" height="80" as="geometry" /></mxCell>
+        <mxCell id="n-time" value="Notification&#xa;Audit log" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#db2777;" vertex="1" parent="lane-audit"><mxGeometry x="60" y="600" width="210" height="70" as="geometry" /></mxCell>
+
+        <mxCell id="r-pay" value="HR / Finance / Super Admin&#xa;Generate payroll" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="lane-requester"><mxGeometry x="35" y="740" width="210" height="75" as="geometry" /></mxCell>
+        <mxCell id="d-pay" value="payroll&#xa;Draft rows" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#475569;" vertex="1" parent="lane-db"><mxGeometry x="35" y="742" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="a-pay" value="Authorized payroll role&#xa;Process then mark Paid" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#16a34a;" vertex="1" parent="lane-approver"><mxGeometry x="35" y="735" width="210" height="85" as="geometry" /></mxCell>
+        <mxCell id="s-pay" value="Draft =&gt; Processed =&gt; Paid&#xa;Employee sees own payslip" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="lane-system"><mxGeometry x="45" y="740" width="240" height="75" as="geometry" /></mxCell>
+        <mxCell id="n-pay" value="Payroll notification&#xa;Audit log" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#db2777;" vertex="1" parent="lane-audit"><mxGeometry x="60" y="742" width="210" height="70" as="geometry" /></mxCell>
+
+        <mxCell id="r-fin" value="Finance / Super Admin&#xa;Create invoice or expense" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="lane-requester"><mxGeometry x="35" y="885" width="210" height="75" as="geometry" /></mxCell>
+        <mxCell id="d-fin" value="invoices / expenses" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#475569;" vertex="1" parent="lane-db"><mxGeometry x="35" y="888" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="a-fin" value="Finance / Super Admin&#xa;Set status" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#16a34a;" vertex="1" parent="lane-approver"><mxGeometry x="35" y="888" width="210" height="70" as="geometry" /></mxCell>
+        <mxCell id="s-fin" value="Invoice Sent/Paid/Overdue&#xa;Expense Approved/Paid&#xa;Profitability updates" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="lane-system"><mxGeometry x="45" y="880" width="240" height="90" as="geometry" /></mxCell>
+        <mxCell id="n-fin" value="Finance notification&#xa;Audit log" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#db2777;" vertex="1" parent="lane-audit"><mxGeometry x="60" y="888" width="210" height="70" as="geometry" /></mxCell>
+
+        <mxCell id="e1" value="creates" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="r-invite" target="d-invite"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" value="accepts" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="d-invite" target="a-invite"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3" value="activates" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="a-invite" target="s-invite"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e4" value="records" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="s-invite" target="n-invite"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="e5" value="requests" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="r-role" target="d-role"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" value="reviews" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="d-role" target="a-role"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e7" value="if approved" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="a-role" target="s-role"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e8" value="records" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="s-role" target="n-role"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="e9" value="submits" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="r-att" target="d-att"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e10" value="approves" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="d-att" target="a-att"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e11" value="updates" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="a-att" target="s-att"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e12" value="records" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="s-att" target="n-att"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="e13" value="applies" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="r-leave" target="d-leave"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e14" value="approves" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="d-leave" target="a-leave"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e15" value="syncs" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="a-leave" target="s-leave"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e16" value="records" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="s-leave" target="n-leave"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="e17" value="submits" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="r-time" target="d-time"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e18" value="approves" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="d-time" target="a-time"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e19" value="counts" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="a-time" target="s-time"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e20" value="records" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="s-time" target="n-time"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="e21" value="generates" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="r-pay" target="d-pay"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e22" value="processes" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="d-pay" target="a-pay"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e23" value="marks paid" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="a-pay" target="s-pay"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e24" value="records" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="s-pay" target="n-pay"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="e25" value="creates" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="r-fin" target="d-fin"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e26" value="updates" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="d-fin" target="a-fin"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e27" value="aggregates" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="a-fin" target="s-fin"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e28" value="records" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="s-fin" target="n-fin"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

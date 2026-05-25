@@ -1,0 +1,123 @@
+<mxfile host="app.diagrams.net" modified="2026-05-24T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="role-feature-access" name="Role Feature Access">
+    <mxGraphModel dx="1600" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="AntOS Role-Based Feature Access" style="text;html=1;strokeColor=none;fillColor=none;fontSize=24;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="360" y="20" width="980" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="super" value="Super Admin" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fee2e2;strokeColor=#991b1b;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="80" width="500" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="super-actions" value="Manage all users&#xa;Manage invitations&#xa;Manage roles and permissions&#xa;Approve role changes&#xa;View audit logs&#xa;Access all modules&#xa;Override approvals&#xa;View all dashboards" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#991b1b;align=left;spacingLeft=12;" vertex="1" parent="super">
+          <mxGeometry x="20" y="45" width="250" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="super-modules" value="All ERP Modules&#xa;Admin Console&#xa;Approvals&#xa;Dashboards" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff1f2;strokeColor=#991b1b;" vertex="1" parent="super">
+          <mxGeometry x="315" y="58" width="155" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="hr" value="HR Manager" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e0f2fe;strokeColor=#0369a1;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="80" width="500" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="hr-actions" value="Manage employees and interns&#xa;Invite Employee/Intern only&#xa;View attendance&#xa;Approve regularization&#xa;Approve/reject leave&#xa;Generate/process payroll if allowed&#xa;Manage onboarding&#xa;View HR documents/assets/helpdesk" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0369a1;align=left;spacingLeft=12;" vertex="1" parent="hr">
+          <mxGeometry x="20" y="45" width="265" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="hr-modules" value="Employees&#xa;Interns&#xa;Attendance&#xa;Leave&#xa;Payroll&#xa;Onboarding&#xa;Assets/Documents" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0f9ff;strokeColor=#0369a1;" vertex="1" parent="hr">
+          <mxGeometry x="330" y="45" width="145" height="105" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pm" value="Project Manager" style="swimlane;whiteSpace=wrap;html=1;fillColor=#dcfce7;strokeColor=#15803d;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="80" width="500" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="pm-actions" value="Manage projects&#xa;Manage tasks&#xa;View team timesheets&#xa;Approve/reject timesheets&#xa;Track deliverables&#xa;Track intern deployment&#xa;View project progress" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#15803d;align=left;spacingLeft=12;" vertex="1" parent="pm">
+          <mxGeometry x="20" y="45" width="250" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="pm-modules" value="Projects&#xa;Tasks&#xa;Timesheets&#xa;Deliverables&#xa;Intern Deployment&#xa;Client Feedback" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fdf4;strokeColor=#15803d;" vertex="1" parent="pm">
+          <mxGeometry x="315" y="50" width="155" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="mentor" value="Mentor" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#b45309;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="300" width="500" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="mentor-actions" value="Manage students&#xa;Manage career sprints&#xa;Review readiness scores&#xa;Give mentor feedback&#xa;Track PPO recommendations&#xa;View certificates" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b45309;align=left;spacingLeft=12;" vertex="1" parent="mentor">
+          <mxGeometry x="20" y="45" width="250" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="mentor-modules" value="Students&#xa;Career Sprints&#xa;Readiness Scores&#xa;Certificates&#xa;PPO Tracker&#xa;Tasks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffbeb;strokeColor=#b45309;" vertex="1" parent="mentor">
+          <mxGeometry x="315" y="50" width="155" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="finance" value="Finance Manager" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ede9fe;strokeColor=#6d28d9;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="300" width="500" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="finance-actions" value="Manage invoices&#xa;Manage expenses&#xa;Process payroll if allowed&#xa;Mark invoices Sent/Paid/Overdue&#xa;Approve/pay expenses&#xa;View profitability&#xa;View finance dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6d28d9;align=left;spacingLeft=12;" vertex="1" parent="finance">
+          <mxGeometry x="20" y="45" width="265" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="finance-modules" value="Finance&#xa;Invoices&#xa;Expenses&#xa;Payroll Cost&#xa;Profitability&#xa;Payroll" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#6d28d9;" vertex="1" parent="finance">
+          <mxGeometry x="330" y="50" width="145" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="employee" value="Employee" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ccfbf1;strokeColor=#0f766e;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="300" width="500" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="employee-actions" value="Check in/check out&#xa;Request regularization&#xa;Apply leave&#xa;View own leave balance&#xa;Submit timesheet&#xa;View own tasks&#xa;View own payslip&#xa;Raise helpdesk ticket&#xa;View own documents" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0f766e;align=left;spacingLeft=12;" vertex="1" parent="employee">
+          <mxGeometry x="20" y="40" width="250" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="employee-modules" value="Own Attendance&#xa;Own Leave&#xa;Own Timesheets&#xa;Own Payroll&#xa;Tasks&#xa;Helpdesk&#xa;Documents" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f0fdfa;strokeColor=#0f766e;" vertex="1" parent="employee">
+          <mxGeometry x="315" y="48" width="155" height="100" as="geometry" />
+        </mxCell>
+
+        <mxCell id="intern" value="Intern" style="swimlane;whiteSpace=wrap;html=1;fillColor=#dbeafe;strokeColor=#1d4ed8;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="520" width="500" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="intern-actions" value="Check in/check out&#xa;Apply leave&#xa;Submit timesheet&#xa;View assigned project/tasks&#xa;View deployment status&#xa;View readiness/PPO status if applicable" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#1d4ed8;align=left;spacingLeft=12;" vertex="1" parent="intern">
+          <mxGeometry x="20" y="45" width="250" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="intern-modules" value="Own Attendance&#xa;Own Leave&#xa;Own Timesheets&#xa;Tasks&#xa;Deployment&#xa;Readiness" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#1d4ed8;" vertex="1" parent="intern">
+          <mxGeometry x="315" y="50" width="155" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="student" value="Student" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fae8ff;strokeColor=#a21caf;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="520" width="500" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="student-actions" value="View career sprints&#xa;View own readiness score&#xa;View certificates&#xa;View PPO status&#xa;Complete profile&#xa;Cannot access HR/payroll/finance/admin modules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#a21caf;align=left;spacingLeft=12;" vertex="1" parent="student">
+          <mxGeometry x="20" y="45" width="270" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="student-modules" value="Career Sprints&#xa;Readiness&#xa;Certificates&#xa;PPO Tracker&#xa;Access Denied for internal ERP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fdf4ff;strokeColor=#a21caf;" vertex="1" parent="student">
+          <mxGeometry x="325" y="50" width="150" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="partner" value="Corporate Partner" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ffedd5;strokeColor=#c2410c;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1160" y="520" width="500" height="170" as="geometry" />
+        </mxCell>
+        <mxCell id="partner-actions" value="View assigned interns&#xa;View project progress&#xa;Submit client feedback&#xa;View own invoices if implemented&#xa;Cannot access internal HR/payroll/admin modules" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#c2410c;align=left;spacingLeft=12;" vertex="1" parent="partner">
+          <mxGeometry x="20" y="45" width="270" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="partner-modules" value="Intern Deployment&#xa;Projects&#xa;Client Feedback&#xa;Own Invoices&#xa;Access Denied for internal ERP" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff7ed;strokeColor=#c2410c;" vertex="1" parent="partner">
+          <mxGeometry x="325" y="50" width="150" height="95" as="geometry" />
+        </mxCell>
+
+        <mxCell id="approval-required" value="Approval Required" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fef2f2;strokeColor=#dc2626;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="390" y="760" width="190" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="view-own" value="View Own Only" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ecfeff;strokeColor=#0891b2;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="735" y="760" width="190" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="access-denied" value="Access Denied" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f1f5f9;strokeColor=#475569;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="760" width="190" height="55" as="geometry" />
+        </mxCell>
+
+        <mxCell id="edge-super" value="Can manage" style="endArrow=block;html=1;rounded=0;strokeColor=#991b1b;fontStyle=1;" edge="1" parent="super" source="super-actions" target="super-modules"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="edge-hr" value="Can approve" style="endArrow=block;html=1;rounded=0;strokeColor=#0369a1;fontStyle=1;" edge="1" parent="hr" source="hr-actions" target="hr-modules"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="edge-pm" value="Can approve" style="endArrow=block;html=1;rounded=0;strokeColor=#15803d;fontStyle=1;" edge="1" parent="pm" source="pm-actions" target="pm-modules"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="edge-mentor" value="Can manage" style="endArrow=block;html=1;rounded=0;strokeColor=#b45309;fontStyle=1;" edge="1" parent="mentor" source="mentor-actions" target="mentor-modules"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="edge-finance" value="Can manage" style="endArrow=block;html=1;rounded=0;strokeColor=#6d28d9;fontStyle=1;" edge="1" parent="finance" source="finance-actions" target="finance-modules"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="edge-employee" value="Can view own only" style="endArrow=block;html=1;rounded=0;strokeColor=#0f766e;fontStyle=1;" edge="1" parent="employee" source="employee-actions" target="employee-modules"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="edge-intern" value="Can view own only" style="endArrow=block;html=1;rounded=0;strokeColor=#1d4ed8;fontStyle=1;" edge="1" parent="intern" source="intern-actions" target="intern-modules"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="edge-student" value="Access denied to internal modules" style="endArrow=block;html=1;rounded=0;strokeColor=#a21caf;fontStyle=1;" edge="1" parent="student" source="student-actions" target="student-modules"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="edge-partner" value="Access denied to internal modules" style="endArrow=block;html=1;rounded=0;strokeColor=#c2410c;fontStyle=1;" edge="1" parent="partner" source="partner-actions" target="partner-modules"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

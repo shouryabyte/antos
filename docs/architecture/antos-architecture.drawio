@@ -1,0 +1,128 @@
+<mxfile host="app.diagrams.net" modified="2026-05-24T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="antos-architecture" name="AntOS Architecture">
+    <mxGraphModel dx="1422" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="frontend-layer" value="Frontend Layer" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e8f4ff;strokeColor=#4c7fb5;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="320" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="auth-layer" value="Auth / RBAC Layer" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f0fdf4;strokeColor=#4d9b63;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="40" width="360" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="service-layer" value="Business Modules Layer" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fff7ed;strokeColor=#c7772b;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="40" width="360" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="backend-layer" value="Supabase Backend Layer" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#64748b;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="40" width="340" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="automation-layer" value="Automation / Approval Layer" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fdf2f8;strokeColor=#b24a7a;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="610" width="700" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="database-layer" value="Database Tables Layer" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f3ff;strokeColor=#7c5eb8;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="800" y="610" width="740" height="300" as="geometry" />
+        </mxCell>
+
+        <mxCell id="browser" value="Browser / User" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="frontend-layer">
+          <mxGeometry x="50" y="60" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="spa" value="React/Vite AntOS SPA" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="frontend-layer">
+          <mxGeometry x="50" y="140" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="pages" value="Feature Pages and Sidebar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#2563eb;" vertex="1" parent="frontend-layer">
+          <mxGeometry x="50" y="220" width="220" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="authprovider" value="AuthProvider" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#16a34a;" vertex="1" parent="auth-layer">
+          <mxGeometry x="70" y="60" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="protected" value="ProtectedRoute" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#16a34a;" vertex="1" parent="auth-layer">
+          <mxGeometry x="70" y="135" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="authorized" value="AuthorizedRoute" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#16a34a;" vertex="1" parent="auth-layer">
+          <mxGeometry x="70" y="210" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="rbac" value="profiles / roles / permissions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#16a34a;" vertex="1" parent="auth-layer">
+          <mxGeometry x="70" y="285" width="220" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="services" value="Services Layer" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;fontStyle=1;" vertex="1" parent="service-layer">
+          <mxGeometry x="70" y="60" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="dashboard" value="Dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="service-layer">
+          <mxGeometry x="40" y="140" width="130" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="attendance" value="Attendance" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="service-layer">
+          <mxGeometry x="190" y="140" width="130" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="leave" value="Leave" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="service-layer">
+          <mxGeometry x="40" y="205" width="130" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="payroll" value="Payroll" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="service-layer">
+          <mxGeometry x="190" y="205" width="130" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="timesheets" value="Timesheets" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="service-layer">
+          <mxGeometry x="40" y="270" width="130" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="finance" value="Finance" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="service-layer">
+          <mxGeometry x="190" y="270" width="130" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="onboarding" value="Onboarding" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#ea580c;" vertex="1" parent="service-layer">
+          <mxGeometry x="115" y="335" width="130" height="42" as="geometry" />
+        </mxCell>
+
+        <mxCell id="supabase-auth" value="Supabase Auth" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#475569;" vertex="1" parent="backend-layer">
+          <mxGeometry x="60" y="60" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="postgres" value="Supabase PostgreSQL" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#475569;" vertex="1" parent="backend-layer">
+          <mxGeometry x="60" y="150" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="rls" value="RLS Policies" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#475569;" vertex="1" parent="backend-layer">
+          <mxGeometry x="60" y="240" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="schema" value="schema.sql" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#475569;" vertex="1" parent="backend-layer">
+          <mxGeometry x="60" y="330" width="220" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="approval" value="Approval Workflows: Leave, Attendance, Timesheets, Payroll, Expenses, Role Changes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#db2777;" vertex="1" parent="automation-layer">
+          <mxGeometry x="40" y="65" width="280" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="notify" value="Notifications" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#db2777;" vertex="1" parent="automation-layer">
+          <mxGeometry x="365" y="55" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="audit" value="Audit Logs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#db2777;" vertex="1" parent="automation-layer">
+          <mxGeometry x="525" y="55" width="130" height="50" as="geometry" />
+        </mxCell>
+
+        <mxCell id="identity-tables" value="auth.users&#xa;profiles&#xa;roles&#xa;permissions&#xa;role_permissions" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7c3aed;" vertex="1" parent="database-layer">
+          <mxGeometry x="35" y="60" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="people-tables" value="employees&#xa;students&#xa;corporate_partners&#xa;departments" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7c3aed;" vertex="1" parent="database-layer">
+          <mxGeometry x="215" y="60" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="ops-tables" value="attendance&#xa;leave_requests&#xa;payroll&#xa;timesheets&#xa;projects&#xa;tasks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7c3aed;" vertex="1" parent="database-layer">
+          <mxGeometry x="395" y="60" width="160" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="finance-tables" value="invoices&#xa;expenses&#xa;notifications&#xa;audit_logs&#xa;user_invitations&#xa;role_change_requests" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#7c3aed;" vertex="1" parent="database-layer">
+          <mxGeometry x="575" y="60" width="150" height="130" as="geometry" />
+        </mxCell>
+
+        <mxCell id="e1" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="browser" target="spa"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="spa" target="authprovider"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="authprovider" target="protected"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e4" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="protected" target="authorized"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e5" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="authorized" target="pages"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="pages" target="services"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e7" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="authprovider" target="supabase-auth"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e8" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="supabase-auth" target="rbac"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e9" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="services" target="postgres"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e10" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="postgres" target="rls"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e11" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="postgres" target="identity-tables"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e12" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="services" target="approval"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e13" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="approval" target="notify"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e14" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="approval" target="audit"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

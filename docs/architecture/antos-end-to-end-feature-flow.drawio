@@ -1,0 +1,94 @@
+<mxfile host="app.diagrams.net" modified="2026-05-24T00:00:00.000Z" agent="Codex" version="24.7.17" type="device">
+  <diagram id="end-to-end-feature-flow" name="End-to-End Feature Flow">
+    <mxGraphModel dx="1600" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="AntOS End-to-End ERP Feature Flow" style="text;html=1;strokeColor=none;fillColor=none;fontSize=24;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="410" y="20" width="980" height="40" as="geometry" />
+        </mxCell>
+
+        <mxCell id="login" value="User Login" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="60" y="90" width="150" height="55" as="geometry" /></mxCell>
+        <mxCell id="auth" value="Supabase Auth" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="250" y="90" width="150" height="55" as="geometry" /></mxCell>
+        <mxCell id="profile" value="Profile Loaded" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="440" y="90" width="150" height="55" as="geometry" /></mxCell>
+        <mxCell id="role" value="Role Loaded" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="630" y="90" width="150" height="55" as="geometry" /></mxCell>
+        <mxCell id="permissions" value="Permissions Loaded" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="820" y="90" width="170" height="55" as="geometry" /></mxCell>
+        <mxCell id="route" value="Route Authorization" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="1030" y="90" width="170" height="55" as="geometry" /></mxCell>
+        <mxCell id="dashboard" value="Role-Based Dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#eff6ff;strokeColor=#2563eb;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="1240" y="90" width="190" height="55" as="geometry" /></mxCell>
+
+        <mxCell id="people" value="People / HR" style="swimlane;whiteSpace=wrap;html=1;fillColor=#e0f2fe;strokeColor=#0369a1;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="60" y="240" width="260" height="260" as="geometry" /></mxCell>
+        <mxCell id="employees" value="Employees" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0369a1;" vertex="1" parent="people"><mxGeometry x="55" y="55" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="attendance" value="Attendance" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0369a1;" vertex="1" parent="people"><mxGeometry x="55" y="115" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="leave" value="Leave" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0369a1;" vertex="1" parent="people"><mxGeometry x="55" y="175" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="payroll" value="Payroll" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#0369a1;" vertex="1" parent="people"><mxGeometry x="55" y="235" width="150" height="45" as="geometry" /></mxCell>
+
+        <mxCell id="work" value="Work" style="swimlane;whiteSpace=wrap;html=1;fillColor=#dcfce7;strokeColor=#15803d;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="360" y="240" width="260" height="260" as="geometry" /></mxCell>
+        <mxCell id="projects" value="Projects" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#15803d;" vertex="1" parent="work"><mxGeometry x="55" y="55" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="tasks" value="Tasks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#15803d;" vertex="1" parent="work"><mxGeometry x="55" y="115" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="timesheets" value="Timesheets" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#15803d;" vertex="1" parent="work"><mxGeometry x="55" y="175" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="utilization" value="Utilization" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#15803d;" vertex="1" parent="work"><mxGeometry x="55" y="235" width="150" height="45" as="geometry" /></mxCell>
+
+        <mxCell id="academy" value="AntBox Academy" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fef3c7;strokeColor=#b45309;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="660" y="240" width="260" height="260" as="geometry" /></mxCell>
+        <mxCell id="students" value="Students" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b45309;" vertex="1" parent="academy"><mxGeometry x="55" y="55" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="sprints" value="Career Sprints" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b45309;" vertex="1" parent="academy"><mxGeometry x="55" y="115" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="readiness" value="Readiness Scores" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b45309;" vertex="1" parent="academy"><mxGeometry x="55" y="175" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="ppo" value="PPO Tracker" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b45309;" vertex="1" parent="academy"><mxGeometry x="55" y="235" width="150" height="45" as="geometry" /></mxCell>
+
+        <mxCell id="iaas" value="IaaS" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fae8ff;strokeColor=#a21caf;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="960" y="240" width="260" height="260" as="geometry" /></mxCell>
+        <mxCell id="partners" value="Corporate Partners" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#a21caf;" vertex="1" parent="iaas"><mxGeometry x="55" y="65" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="deployment" value="Intern Deployment" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#a21caf;" vertex="1" parent="iaas"><mxGeometry x="55" y="135" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="feedback" value="Client Feedback" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#a21caf;" vertex="1" parent="iaas"><mxGeometry x="55" y="205" width="150" height="45" as="geometry" /></mxCell>
+
+        <mxCell id="finance" value="Finance" style="swimlane;whiteSpace=wrap;html=1;fillColor=#ede9fe;strokeColor=#6d28d9;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="1260" y="240" width="260" height="260" as="geometry" /></mxCell>
+        <mxCell id="invoices" value="Invoices" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6d28d9;" vertex="1" parent="finance"><mxGeometry x="55" y="55" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="expenses" value="Expenses" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6d28d9;" vertex="1" parent="finance"><mxGeometry x="55" y="115" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="payroll-cost" value="Payroll Cost" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6d28d9;" vertex="1" parent="finance"><mxGeometry x="55" y="175" width="150" height="45" as="geometry" /></mxCell>
+        <mxCell id="profitability" value="Profitability" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#6d28d9;" vertex="1" parent="finance"><mxGeometry x="55" y="235" width="150" height="45" as="geometry" /></mxCell>
+
+        <mxCell id="admin" value="Admin" style="swimlane;whiteSpace=wrap;html=1;fillColor=#fee2e2;strokeColor=#991b1b;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="360" y="590" width="360" height="230" as="geometry" /></mxCell>
+        <mxCell id="invitations" value="Invitations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#991b1b;" vertex="1" parent="admin"><mxGeometry x="35" y="55" width="130" height="45" as="geometry" /></mxCell>
+        <mxCell id="role-changes" value="Role Changes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#991b1b;" vertex="1" parent="admin"><mxGeometry x="195" y="55" width="130" height="45" as="geometry" /></mxCell>
+        <mxCell id="audit" value="Audit Logs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#991b1b;" vertex="1" parent="admin"><mxGeometry x="35" y="135" width="130" height="45" as="geometry" /></mxCell>
+        <mxCell id="notifications" value="Notifications" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#991b1b;" vertex="1" parent="admin"><mxGeometry x="195" y="135" width="130" height="45" as="geometry" /></mxCell>
+
+        <mxCell id="dashboard-agg" value="Dashboard Aggregates&#xa;Attendance, Leave, Payroll, Timesheets, Finance, Students, Projects, Notifications" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#475569;fontStyle=1;" vertex="1" parent="1"><mxGeometry x="810" y="610" width="440" height="130" as="geometry" /></mxCell>
+
+        <mxCell id="e1" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="login" target="auth"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e2" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="auth" target="profile"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e3" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="profile" target="role"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e4" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="role" target="permissions"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e5" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="permissions" target="route"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e6" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="route" target="dashboard"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="e7" value="branches by role" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="dashboard" target="people"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e8" value="branches by role" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="dashboard" target="work"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e9" value="branches by role" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="dashboard" target="academy"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e10" value="branches by role" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="dashboard" target="iaas"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e11" value="branches by role" style="endArrow=block;html=1;rounded=0;strokeColor=#334155;" edge="1" parent="1" source="dashboard" target="finance"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="e12" value="admin users" style="endArrow=block;html=1;rounded=0;strokeColor=#991b1b;" edge="1" parent="1" source="dashboard" target="admin"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="p1" style="endArrow=block;html=1;rounded=0;strokeColor=#0369a1;" edge="1" parent="people" source="employees" target="attendance"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="p2" style="endArrow=block;html=1;rounded=0;strokeColor=#0369a1;" edge="1" parent="people" source="attendance" target="leave"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="p3" style="endArrow=block;html=1;rounded=0;strokeColor=#0369a1;" edge="1" parent="people" source="leave" target="payroll"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="w1" style="endArrow=block;html=1;rounded=0;strokeColor=#15803d;" edge="1" parent="work" source="projects" target="tasks"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="w2" style="endArrow=block;html=1;rounded=0;strokeColor=#15803d;" edge="1" parent="work" source="tasks" target="timesheets"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="w3" style="endArrow=block;html=1;rounded=0;strokeColor=#15803d;" edge="1" parent="work" source="timesheets" target="utilization"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a1" style="endArrow=block;html=1;rounded=0;strokeColor=#b45309;" edge="1" parent="academy" source="students" target="sprints"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a2" style="endArrow=block;html=1;rounded=0;strokeColor=#b45309;" edge="1" parent="academy" source="sprints" target="readiness"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="a3" style="endArrow=block;html=1;rounded=0;strokeColor=#b45309;" edge="1" parent="academy" source="readiness" target="ppo"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="i1" style="endArrow=block;html=1;rounded=0;strokeColor=#a21caf;" edge="1" parent="iaas" source="partners" target="deployment"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="i2" style="endArrow=block;html=1;rounded=0;strokeColor=#a21caf;" edge="1" parent="iaas" source="deployment" target="feedback"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f1" style="endArrow=block;html=1;rounded=0;strokeColor=#6d28d9;" edge="1" parent="finance" source="invoices" target="expenses"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f2" style="endArrow=block;html=1;rounded=0;strokeColor=#6d28d9;" edge="1" parent="finance" source="expenses" target="payroll-cost"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f3" style="endArrow=block;html=1;rounded=0;strokeColor=#6d28d9;" edge="1" parent="finance" source="payroll-cost" target="profitability"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="agg1" value="feeds" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;" edge="1" parent="1" source="people" target="dashboard-agg"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="agg2" value="feeds" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;" edge="1" parent="1" source="work" target="dashboard-agg"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="agg3" value="feeds" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;" edge="1" parent="1" source="academy" target="dashboard-agg"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="agg4" value="feeds" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;" edge="1" parent="1" source="iaas" target="dashboard-agg"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="agg5" value="feeds" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;" edge="1" parent="1" source="finance" target="dashboard-agg"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="agg6" value="feeds" style="endArrow=block;html=1;rounded=0;strokeColor=#475569;" edge="1" parent="1" source="admin" target="dashboard-agg"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
