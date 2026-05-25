@@ -123,6 +123,45 @@ export async function acceptPendingInvitationForUser(userId: string, email: stri
   return invitation;
 }
 
+export async function acceptInvitationForSignedInUser(userId: string, email: string, token: string) {
+  if (!supabase) return null;
+  const now = new Date().toISOString();
+  const { data: invitation, error: invitationError } = await supabase
+    .from("user_invitations")
+    .select("*, roles(name)")
+    .eq("invite_token", token)
+    .eq("email", email.toLowerCase())
+    .maybeSingle();
+
+  if (invitationError) throw invitationError;
+  if (!invitation) return null;
+  if (invitation.status === "Accepted") return invitation;
+  if (invitation.status !== "Pending" || invitation.expires_at <= now) return null;
+
+  const roleName = invitation.roles?.name as RoleName | undefined;
+  const nextProfile = {
+    id: userId,
+    email: invitation.email,
+    full_name: invitation.full_name,
+    role_id: invitation.role_id,
+    employee_id: invitation.employee_id,
+    student_id: invitation.student_id,
+    corporate_partner_id: invitation.corporate_partner_id,
+    status: "Pending Profile Completion"
+  };
+
+  const { error: profileError } = await supabase.from("profiles").upsert(nextProfile, { onConflict: "id" });
+  if (profileError) throw profileError;
+
+  const { error: inviteError } = await supabase.from("user_invitations").update({ status: "Accepted", accepted_at: now }).eq("id", invitation.id);
+  if (inviteError) throw inviteError;
+
+  if (roleName) await generateOnboardingTasks(userId, roleName);
+  await logAudit(null, "invite accepted", "Account", invitation.id, { email, tokenAccepted: true });
+  await createAccountNotification({ userId, title: "Invitation accepted", message: "Your AntOS account was created. Complete your profile to continue.", type: "Success", module: "Account" });
+  return invitation;
+}
+
 export function isProfileComplete(role: RoleName, values: Record<string, string>) {
   if (role === "Student") {
     return Boolean(values.college && values.degree && values.graduationYear && values.skills && values.careerInterest && values.portfolioLink);

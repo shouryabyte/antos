@@ -87,7 +87,7 @@ export function InvitationsPage() {
     await logAudit(auth.profile, "user invited", "Invitations", form.email, { role: form.role });
     await createAccountNotification({ roleTarget:"Super Admin", title:"Invite created", message:`${form.fullName} was invited as ${form.role}.`, type:"Invitation", module:"Invitations" });
     setOpen(false); setForm({ email:"", fullName:"", role:"Employee", departmentId:"", expiresAt:format(addDays(new Date(), 7), "yyyy-MM-dd") });
-    setMessage("Invitation created. Copy the token link for testing if email delivery is not configured.");
+    setMessage("Invitation created. Copy the accept-invite link for testing if email delivery is not configured.");
     await load();
   }
 
@@ -104,7 +104,7 @@ export function InvitationsPage() {
   }
 
   function inviteLink(row: Invitation) {
-    return `${window.location.origin}/login?invite=${row.invite_token}`;
+    return `${window.location.origin}/accept-invite?token=${row.invite_token}`;
   }
 
   return <div className="space-y-6">
@@ -124,7 +124,7 @@ export function InvitationsPage() {
     <Card>
       <div className="table-scroll rounded-2xl border border-slate-200">
         <table className="min-w-full text-sm"><thead className="bg-slate-50 text-left text-xs uppercase text-slate-500"><tr><th className="px-4 py-3">User</th><th className="px-4 py-3">Role</th><th className="px-4 py-3">Department</th><th className="px-4 py-3">Expires</th><th className="px-4 py-3">Status</th><th className="px-4 py-3">Token Link</th><th className="px-4 py-3">Actions</th></tr></thead>
-        <tbody className="divide-y bg-white">{filtered.map((row)=><tr key={row.id} className={row.status==="Pending" && isBefore(parseISO(row.expires_at), new Date()) ? "bg-red-50" : ""}><td className="px-4 py-3"><p className="font-black">{row.full_name}</p><p className="text-xs text-slate-500">{row.email}</p></td><td className="px-4 py-3">{row.roles?.name}</td><td className="px-4 py-3">{row.departments?.name || "--"}</td><td className="px-4 py-3">{row.expires_at.slice(0,10)}</td><td className="px-4 py-3"><StatusBadge value={row.status}/></td><td className="px-4 py-3"><button onClick={()=>navigator.clipboard?.writeText(inviteLink(row))} className="rounded-lg border px-2 py-1 text-xs font-bold"><Copy size={13} className="inline"/> Copy</button></td><td className="px-4 py-3"><div className="flex gap-2">{row.status==="Pending" && <button onClick={()=>updateInvite(row,"Pending")} className="rounded-lg bg-sky-50 px-2 py-1 text-xs font-bold text-sky-700"><RefreshCcw size={13} className="inline"/> Resend</button>}{row.status==="Pending" && <button onClick={()=>updateInvite(row,"Revoked")} className="rounded-lg bg-red-50 px-2 py-1 text-xs font-bold text-red-700">Revoke</button>}</div></td></tr>)}{!filtered.length && <tr><td colSpan={7} className="px-4 py-10 text-center font-semibold text-slate-500">No invitations found.</td></tr>}</tbody></table>
+        <tbody className="divide-y bg-white">{filtered.map((row)=><tr key={row.id} className={row.status==="Pending" && isBefore(parseISO(row.expires_at), new Date()) ? "bg-red-50" : ""}><td className="px-4 py-3"><p className="font-black">{row.full_name}</p><p className="text-xs text-slate-500">{row.email}</p></td><td className="px-4 py-3">{row.roles?.name}</td><td className="px-4 py-3">{row.departments?.name || "--"}</td><td className="px-4 py-3">{row.expires_at.slice(0,10)}</td><td className="px-4 py-3"><StatusBadge value={row.status}/></td><td className="px-4 py-3"><div className="max-w-[260px] space-y-2"><code className="block truncate rounded-lg bg-slate-50 px-2 py-1 text-[11px] font-bold text-slate-600">{inviteLink(row)}</code><button onClick={()=>navigator.clipboard?.writeText(inviteLink(row))} className="rounded-lg border px-2 py-1 text-xs font-bold"><Copy size={13} className="inline"/> Copy Invite Link</button></div></td><td className="px-4 py-3"><div className="flex gap-2">{row.status==="Pending" && <button onClick={()=>updateInvite(row,"Pending")} className="rounded-lg bg-sky-50 px-2 py-1 text-xs font-bold text-sky-700"><RefreshCcw size={13} className="inline"/> Resend</button>}{row.status==="Pending" && <button onClick={()=>updateInvite(row,"Revoked")} className="rounded-lg bg-red-50 px-2 py-1 text-xs font-bold text-red-700">Revoke</button>}</div></td></tr>)}{!filtered.length && <tr><td colSpan={7} className="px-4 py-10 text-center font-semibold text-slate-500">No invitations found.</td></tr>}</tbody></table>
       </div>
     </Card>
     <FormDialog open={open} title="Invite User" onClose={()=>setOpen(false)}>

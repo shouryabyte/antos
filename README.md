@@ -225,4 +225,12 @@ Onboarding automations:
 - Log account, invitation, profile, lifecycle, and role-change events.
 - Create account notifications for invitations, role changes, profile completion, verification, partner approval, and lifecycle changes.
 
-If production email delivery is not configured, invitation records are still created and the UI exposes a copyable test invite link. Production email delivery can later be implemented with Supabase Auth `inviteUserByEmail`, a Supabase Edge Function, or an external email provider.
+Invitation acceptance:
+- Admins create invitations from `/admin/invitations`.
+- The demo/testing invite URL format is `/accept-invite?token=<invite_token>`.
+- Full production URLs look like `https://antos-jade.vercel.app/accept-invite?token=<invite_token>`.
+- Legacy `/login?invite=<invite_token>` links redirect automatically to `/accept-invite?token=<invite_token>`.
+- The invited user sets a password, creates a Supabase Auth account, gets linked to the pending invitation, and is redirected to `/complete-profile`.
+- The resulting profile starts as `Pending Profile Completion` with the invited role and linked employee/student/partner record.
+
+If production email delivery is not configured, invitation records are still created and the UI exposes a copyable test invite link. Production email delivery should use Supabase Edge Functions, Supabase Auth email APIs, or an external email provider. A production Edge Function is the preferred place to validate invitation tokens and use the Supabase service role key server-side. Never expose the service role key in frontend code, Vercel frontend environment variables, browser logs, or bundled JavaScript.

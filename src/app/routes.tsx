@@ -14,6 +14,7 @@ import { FinancePage } from "../features/finance/FinancePage";
 import { InvitationsPage } from "../features/admin/InvitationsPage";
 import { RoleChangeRequestsPage } from "../features/admin/RoleChangeRequestsPage";
 import { AuditLogsPage } from "../features/admin/AuditLogsPage";
+import { AcceptInvitePage } from "../features/onboarding/AcceptInvitePage";
 import { CompleteProfilePage } from "../features/account/CompleteProfilePage";
 import { AccountDisabledPage } from "../features/account/AccountDisabledPage";
 import { PendingVerificationPage } from "../features/account/PendingVerificationPage";
@@ -43,6 +44,7 @@ function Placeholder({ title, collection, description }: { title:string; collect
 
 export const routes: RouteObject[] = [
 { path:"/login", element:<LoginPage/> },
+{ path:"/accept-invite", element:<AcceptInvitePage/> },
 { element:<ProtectedRoute/>, children:[
   { path:"/complete-profile", element:<CompleteProfilePage/> },
   { path:"/account-disabled", element:<AccountDisabledPage/> },

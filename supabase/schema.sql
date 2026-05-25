@@ -706,6 +706,45 @@ security definer
 set search_path = public
 as $$ select corporate_partner_id from public.profiles where id = auth.uid() limit 1 $$;
 
+create or replace function public.get_public_invitation_by_token(p_invite_token text)
+returns table (
+  id uuid,
+  email text,
+  full_name text,
+  role_id uuid,
+  role_name text,
+  department_id uuid,
+  employee_id uuid,
+  student_id uuid,
+  corporate_partner_id uuid,
+  expires_at timestamptz,
+  status text
+)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select
+    ui.id,
+    ui.email,
+    ui.full_name,
+    ui.role_id,
+    r.name as role_name,
+    ui.department_id,
+    ui.employee_id,
+    ui.student_id,
+    ui.corporate_partner_id,
+    ui.expires_at,
+    ui.status
+  from public.user_invitations ui
+  join public.roles r on r.id = ui.role_id
+  where ui.invite_token = p_invite_token
+  limit 1
+$$;
+
+grant execute on function public.get_public_invitation_by_token(text) to anon, authenticated;
+
 insert into public.roles (name) values
   ('Super Admin'), ('HR Manager'), ('Project Manager'), ('Mentor'), ('Finance Manager'),
   ('Employee'), ('Intern'), ('Student'), ('Corporate Partner')

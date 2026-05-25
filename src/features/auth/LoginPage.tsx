@@ -27,8 +27,13 @@ export function LoginPage() {
   const from = (location.state as { from?: { pathname?: string } } | null)?.from?.pathname || "/dashboard";
 
   useEffect(() => {
+    const inviteToken = new URLSearchParams(location.search).get("invite");
+    if (inviteToken) {
+      navigate(`/accept-invite?token=${encodeURIComponent(inviteToken)}`, { replace: true });
+      return;
+    }
     if (auth.isAuthenticated) navigate("/dashboard", { replace: true });
-  }, [auth.isAuthenticated, navigate]);
+  }, [auth.isAuthenticated, location.search, navigate]);
 
   if (auth.isAuthenticated) return <Navigate to="/dashboard" replace />;
 
